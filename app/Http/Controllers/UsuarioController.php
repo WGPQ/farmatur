@@ -22,8 +22,9 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $usuarios=Usuario::latest()->paginate(5);
-        return view('usuarios.index',compact('usuarios'))->with('i',(request()->input('page',1)-1)*5);
+         $data['users'] = Post::orderBy('id','desc')->paginate(8);
+   
+         return view('usuarios.index',$data);
     }
 
     /**
@@ -33,7 +34,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        return view('usuarios.create');
+    //
     }
 
     /**
@@ -44,7 +45,7 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+       /* $request->validate([
             'nombre'=>'required',
             'cedula'=>'required',
             'email'=>'required',
@@ -64,9 +65,26 @@ class UsuarioController extends Controller
             'genero' =>$request['genero'],
             'tipouser' =>$request['tipouser'],
                 ]);
+*/
+$usuario = new Usuario();
+$usuario ->nombre= $request ->input('nombre');
+$usuario ->email= $request ->input('email');
+$usuario ->password= Hash::make($request ->input('password'));
+$usuario ->cedula= $request ->input('cedula');
+$usuario ->genero= $request ->input('genero');
+$usuario ->tipouser= $request ->input('tipouser');
+$usuario->save();
 
-       return redirect()->route('usuarios.index')->with('success','Blog created successfully.');
-    }
+return redirect()->route('usuarios.index')->with('success','Blog created successfully.');
+
+
+//
+$usuarioID = $request->user_id;
+$usuario   =   Post::updateOrCreate(['id' => $usuarioID],
+            ['title' => $request->title, 'body' => $request->body]);
+
+return Response::json($post);
+}
 
     /**
      * Display the specified resource.

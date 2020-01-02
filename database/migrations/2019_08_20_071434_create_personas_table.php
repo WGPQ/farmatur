@@ -17,6 +17,10 @@ class CreatePersonasTable extends Migration
             $table->increments('id');
             $table->string('nombre',100);
             $table->string('cedula',15);
+            $table->string('telefono',15);
+            $table->string('email',60);
+            $table->string('genero',2);
+           // $table->string('foto');
             $table->timestamps();
         });
     }

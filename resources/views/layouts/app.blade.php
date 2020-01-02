@@ -59,18 +59,22 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                     
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">{{ __('INICIO') }}</a>
                         </li>
-                        
+
                         @else
-                
+
                         <li class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-                            <a href="{{ url('/farmacias')  }}"><h5>Register nueva farmacia</h5></a>
-                            <a href="{{ url('/usuarios')  }}"><h5>Register nuevo usuario</h5></a>
+                            <a href="{{ url('/farmacias')  }}">
+                                <h5>Register nueva farmacia</h5>
+                            </a>
+                            <a href="{{ url('/usuarios')  }}">
+                                <h5>Register nuevo usuario</h5>
+                            </a>
                         </li>
-                      
+
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -99,6 +103,30 @@
             @yield('content')
         </main>
     </div>
+
+    <script>
+    $(document).ready(function() {
+
+        $('#adduser').on('submit', function(e) { 
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/Adduser",
+                data: $('#adduser').serialize(),
+                success: function(response) {
+                    console.log(response)
+                    $('#useraddModal').modal('hide')
+                    alert("Usuario Guardado");
+                },
+                error: function(error) {
+                    console.log(error)
+                    alert("Usuario no guardado");
+                }
+            });
+        });
+
+    });
+    </script>
 </body>
 
 </html>

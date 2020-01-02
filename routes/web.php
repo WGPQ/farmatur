@@ -16,9 +16,9 @@ Route::get('/', function () {
 });
 
 //Route::resource('usuarios','HomeController');
-//Route::resource('personas','PersonaController');
+
 Route::resource('farmacias','FarmaciaController');
-Route::resource('usuarios','UsuarioController');
+
 Route::resource('divpoliticas','DivpoliticaController');
 Route::get('/create','CotrollerAnimal@vista');
 Route::post('/create','CotrollerAnimal@create');
@@ -29,12 +29,15 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-//Route::group(['middleware' => ['web']], function() {
-    Route::resource('persona','PersonaController');
-    Route::POST('addPersona','PersonaController@addPersona');
-    Route::POST('editPersona','PersonaController@editPersona');
-    Route::POST('deletePersona','PersonaController@deletePersona');
- // });
+Route::get('/usuarios','UsuarioController@index');
+
+Route::post('/Adduser','UsuarioController@store');
+
+Route::resource('ajax-posts', 'ajaxcrud\AjaxPostController');
 
 
- Route::resource('ajax-posts', 'ajaxcrud\AjaxPostController');
+
+
+
+//Route::resource('ajax-crud', 'AjaxCrudController');
+Route::resource('personas','PersonaController');
