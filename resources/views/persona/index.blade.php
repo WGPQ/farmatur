@@ -1,237 +1,247 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Laravel 5.8 Ajax CRUD Application - W3Adda.com</title>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-    <style>
-    .container {
-        padding: 0.5%;
-    }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How to Delete or Remove Data From Mysql in Laravel 6 using Ajax</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-
     <div class="container">
-        <h2 style="margin-top: 12px;" class="alert alert-success">Laravel 5.8 Ajax CRUD Application - W3Adda.com</h2>
-        <br>
-        <div class="row">
-            <div class="col-12">
-                <a href="javascript:void(0)" class="btn btn-success mb-2" id="create-new-post">Add post</a>
-
-                <table class="table table-bordered" id="laravel_crud">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Nombre</th>
-                            <th>Cedula</th>
-                            <th>Telefono</th>
-                            <th>Email</th>
-                            <th>Genero</th>
-                            <td colspan="2"> </td>
-                        </tr>
-                    </thead>
-                    <tbody id="persona-crud">
-                        @foreach($personas as $per)
-                        <tr id="persona_id_{{ $per->id }}">
-                            <td>{{ ++$i }}</td>
-                            <td>{{ $per->nombre }}</td>
-                            <td>{{ $per->cedula }}</td>
-                            <td>{{ $per->telefono }}</td>
-                            <td>{{ $per->email }}</td>
-                            <td>{{ $per->genero }}</td>
-                            <td><a href="javascript:void(0)" id="edit-persona" data-id="{{ $per->id }}"
-                                    class="btn btn-info">Edit</a></td>
-                            <td>
-                                <a href="javascript:void(0)" id="delete-persona" data-id="{{ $per->id }}"
-                                    class="btn btn-danger delete-post">Delete</a></td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                {{ $personas->links() }}
-            </div>
+        <br />
+        <h3 align="center">How to Delete or Remove Data From Mysql in Laravel 6 using Ajax</h3>
+        <br />
+        <div align="right">
+            <button type="button" name="create_persona" id="create_persona" class="btn btn-success btn-sm">Create
+                Record</button>
         </div>
-    </div>
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="ajax-crud-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="postForm" name="postForm" class="form-horizontal">
-                        <input type="hidden" name="persona_id" id="persona_id">
-                        <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">Nombre</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="nombre" name="nombre" value="" required="">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Cedula</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="cedula" name="cedula" value="" required="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Telefono</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="telefono" name="telefono" value=""
-                                    required="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Correo</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="email" name="email" value="" required="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Genero</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="genero" name="genero" value="" required="">
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="btn-save" value="create">Guardar1</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <br />
+        <div class="table-responsive">
+            <table id="persona_table" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cedula</th>
+                        <th>Telefono</th>
+                        <th>Correo</th>
+                        <th>Genero</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
+        <br />
+        <br />
     </div>
-
-
-
-
-
-
-
-
 </body>
 
 </html>
 
+<div id="formModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add New Record</h4>
+            </div>
+            <div class="modal-body">
+                <span id="form_result"></span>
+                <form method="post" id="persona_form" class="form-horizontal">
+                    @csrf
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Nombre : </label>
+                        <div class="col-md-8">
+                            <input type="text" name="nombre" id="nombre" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Cedula : </label>
+                        <div class="col-md-8">
+                            <input type="text" name="cedula" id="cedula" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Telefono : </label>
+                        <div class="col-md-8">
+                            <input type="text" name="telefono" id="telefono" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Correo : </label>
+                        <div class="col-md-8">
+                            <input type="text" name="email" id="email" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Genero : </label>
+                        <div class="col-md-8">
+                            <input type="text" name="genero" id="genero" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group" align="center">
+                        <input type="hidden" name="action" id="action" value="Add" />
+                        <input type="hidden" name="hidden_id" id="hidden_id" />
+                        <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
+                            value="Add" />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Confirmation</h2>
+            </div>
+            <div class="modal-body">
+                <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
 $(document).ready(function() {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+    $('#persona_table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ route('personas.index') }}",
+        },
+        columns: [{
+                data: 'nombre',
+                name: 'nombre'
+            },
+            {
+                data: 'cedula',
+                name: 'cedula'
+            },
+            {
+                data: 'telefono',
+                name: 'telefono'
+            },
+            {
+                data: 'email',
+                name: 'email'
+            },
+            {
+                data: 'genero',
+                name: 'genero'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false
+            }
+        ]
+    });
+
+    $('#create_persona').click(function() {
+        $('.modal-title').text('Add New Record');
+        $('#action_button').val('Add');
+        $('#action').val('Add');
+        $('#form_result').html('');
+
+        $('#formModal').modal('show');
+    });
+
+    $('#persona_form').on('submit', function(event) {
+        event.preventDefault();
+        var action_url = '';
+
+        if ($('#action').val() == 'Add') {
+            action_url = "{{ route('personas.store') }}";
         }
-    });
 
-
-    $('#create-new-post').click(function() {
-        $('#btn-save').val("create-post");
-        $('#postForm').trigger("reset");
-        $('#postCrudModal').html("Add New post");
-        $('#ajax-crud-modal').modal('show');
-
-    });
-
-    $('body').on('click', '#edit-persona', function() {
-        var persona_id = $(this).data('id');
-        $.get('personas/' + persona_id + '/edit', function(data) {
-            $('#postCrudModal').html("Edit post");
-            $('#btn-save').val("edit-persona");
-            $('#ajax-crud-modal').modal('show');
-            $('#persona_id').val(data.id);
-            $('#nombre').val(data.nombre);
-            $('#cedula').val(data.cedula);
-            $('#telefono').val(data.telefono);
-            $('#email').val(data.email);
-            $('#genero').val(data.genero);
-        })
-    });
-
-
-
-    $('body').on('click', '.delete-post', function() {
-        var persona_id = $(this).data("id");
-        confirm("Are You sure want to delete !");
+        if ($('#action').val() == 'Edit') {
+            action_url = "{{ route('personas.update') }}";
+        }
 
         $.ajax({
-            type: "DELETE",
-            url: "{{ url('personas')}}" + '/' + persona_id,
+            url: action_url,
+            method: "POST",
+            data: $(this).serialize(),
+            dataType: "json",
             success: function(data) {
-                $("#persona_id_" + persona_id).remove();
-            },
-            error: function(data) {
-                console.log('Error:', data);
+                var html = '';
+                if (data.errors) {
+                    html = '<div class="alert alert-danger">';
+                    for (var count = 0; count < data.errors.length; count++) {
+                        html += '<p>' + data.errors[count] + '</p>';
+                    }
+                    html += '</div>';
+                }
+                if (data.success) {
+                    html = '<div class="alert alert-success">' + data.success + '</div>';
+                    $('#persona_form')[0].reset();
+                    $('#persona_table').DataTable().ajax.reload();
+                }
+                $('#form_result').html(html);
             }
         });
     });
+
+    $(document).on('click', '.edit', function() {
+        var id = $(this).attr('id');
+        $('#form_result').html('');
+        $.ajax({
+            url: "/personas/" + id + "/edit",
+            dataType: "json",
+            success: function(data) {
+                $('#nombre').val(data.result.nombre);
+                $('#cedula').val(data.result.cedula);
+                $('#telefono').val(data.result.telefono);
+                $('#email').val(data.result.email);
+                $('#genero').val(data.result.genero);
+                $('#hidden_id').val(id);
+                $('.modal-title').text('Edit Record');
+                $('#action_button').val('Edit');
+                $('#action').val('Edit');
+                $('#formModal').modal('show');
+            }
+        })
+    });
+
+    var user_id;
+
+    $(document).on('click', '.delete', function() {
+        user_id = $(this).attr('id');
+        $('#ok_button').text('OK');
+        $('#confirmModal').modal('show');
+    });
+
+    $('#ok_button').click(function() {
+        $.ajax({
+            url: "personas/destroy/" + user_id,
+            beforeSend: function() {
+                $('#ok_button').text('Deleting...');
+            },
+            success: function(data) {
+                $('#confirmModal').modal('hide');
+                $('#persona_table').DataTable().ajax.reload();
+                setTimeout(function() {
+                    // alert('Data Deleted');
+                }, 2000);
+            }
+        })
+    });
+
 });
-
-
-
-if ($("#postForm").length > 0) {
-    $("#postForm").validate({
-
-        submitHandler: function(form) {
-
-            var actionType = $('#btn-save').val();
-            $('#btn-save').html('Sending..');
-
-
-            $.ajax({
-                data: $('#postForm').serialize(),
-                url: "{{ route('personas.store') }}",
-                type: "POST",
-                dataType: 'json',
-                success: function(data) {
-                    var persona = '<tr id="persona_id_' + data.id + '"><td>' + data.id +
-                        '</td><td>' +
-                        data.nombre + '</td><td>' + data.cedula + '</td><td>' + data.telefono +
-                        '</td><td>' + data.email + '</td><td>' + data.genero + '</td>';
-                    persona += '<td><a href="javascript:void(0)" id="edit-persona" data-id="' +
-                        data
-                        .id + '" class="btn btn-info">Edit</a></td>';
-                    persona += '<td><a href="javascript:void(0)" id="delete-post" data-id="' +
-                        data
-                        .id + '" class="btn btn-danger delete-post">Delete</a></td></tr>';
-
-
-                    if (actionType == "create-post") {
-                        $('#persona-crud').prepend(persona);
-                    } else {
-                        $("#persona_id_" + data.id).replaceWith(persona);
-                    }
-
-                    $('#postForm').trigger("reset");
-                    $('#ajax-crud-modal').modal('hide');
-                    $('#btn-save').html('Guardar2');
-
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                    $('#btn-save').html('Guardar3');
-                }
-            });
-        }
-    })
-}
 </script>

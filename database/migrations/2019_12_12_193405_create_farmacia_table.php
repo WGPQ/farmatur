@@ -13,19 +13,19 @@ class CreateFarmaciaTable extends Migration
      */
     public function up()
     {
-        Schema::create('farmacia', function (Blueprint $table) {
+        Schema::create('farmacias', function (Blueprint $table) {
             $table->increments('id');
            $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('id_division')->unsigned()->nullable();
-            $table->string('nomfarmacias',100);
+            $table->string('nomfarmacia',100);
             $table->string('telefono',20);
             $table->string('direccion',100);
             $table->string('longitud',100);
             $table->string('latitud',100);
            // $table->integer('activo');
-            $table->string('jerarqua',100);
+            $table->string('jerarquia',100);
             $table->timestamps();
-            $table->foreign('parent_id')->references('id')->on('farmacia');
+            $table->foreign('parent_id')->references('id')->on('farmacias');
             $table->foreign('id_division')->references('id')->on('divpolitica');
         });
     }

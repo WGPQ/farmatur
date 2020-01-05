@@ -15,15 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::resource('usuarios','HomeController');
-
-Route::resource('farmacias','FarmaciaController');
 
 Route::resource('divpoliticas','DivpoliticaController');
-Route::get('/create','CotrollerAnimal@vista');
-Route::post('/create','CotrollerAnimal@create');
-Route::resource('persona2','PersonaController2');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -31,13 +24,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/usuarios','UsuarioController@index');
 
-Route::post('/Adduser','UsuarioController@store');
 
-Route::resource('ajax-posts', 'ajaxcrud\AjaxPostController');
+Route::resource('farmacias', 'FarmaciaController');
+
+Route::post('farmacias/update', 'FarmaciaController@update')->name('farmacias.update');
+
+Route::get('farmacias/destroy/{id}', 'FarmaciaController@destroy');
 
 
 
+Route::resource('personas', 'PersonaController');
 
+Route::post('personas/update', 'PersonaController@update')->name('personas.update');
 
-//Route::resource('ajax-crud', 'AjaxCrudController');
-Route::resource('personas','PersonaController');
+Route::get('personas/destroy/{id}', 'PersonaController@destroy');

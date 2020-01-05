@@ -22,7 +22,7 @@ class CreateModificacionTable extends Migration
             $table->date('fecha');
             $table->timestamps();
             $table->foreign('idadmin')->references('id')->on('adiministrador');
-            $table->foreign('idfarmacia')->references('id')->on('farmacia');
+            $table->foreign('idfarmacia')->references('id')->on('farmacias');
         });
     }
 

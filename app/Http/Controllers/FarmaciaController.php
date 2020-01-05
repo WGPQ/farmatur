@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Farmacia;
+use App\Farmacias;
 use Illuminate\Http\Request;
+use DataTables;
+use Validator;
 
 class FarmaciaController extends Controller
 {
@@ -18,12 +20,22 @@ class FarmaciaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         
-        $farmacias=Farmacia::latest()->paginate(5);
-       
-        return view('farmacias.index',compact('farmacias'))->with('i',(request()->input('page',1)-1)*5);
+        if($request->ajax())
+        {
+            $data = Farmacias::latest()->get();
+            return DataTables::of($data)
+                    ->addColumn('action', function($data){
+                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit</button>';
+                        $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm">Delete</button>';
+                        return $button;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        return view('farmacias.index');
     }
 
     /**
@@ -33,7 +45,7 @@ class FarmaciaController extends Controller
      */
     public function create()
     {
-        return view('farmacias.create');
+        
     }
 
     /**
@@ -44,79 +56,109 @@ class FarmaciaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nomfarmacias'=>'required',
-            'id_division'=>'required',
-            'telefono'=>'required',
-            'direccion'=>'required',
-            //'activo'=>1,
-            'longitud'=>'required',
-            'latitud'=>'required',
-            'jerarqua'=>'required',
-            
-        ]);
+        $rules = array(
+            'parent_id'    =>  'required',
+            'id_division'     =>  'required',
+            'nomfarmacia'     =>  'required',
+            'telefono'     =>  'required',
+            'direccion'     =>  'required',
+            'longitud'     =>  'required',
+            'latitud'     =>  'required',
+            'jerarquia'     =>  'required'
+        );
 
-        Farmacia::create($request->all());
-       /*Farmacia::create([
-            'nomfarmacias' => $request['nomfarmacias'],
-            'id_division' => $request['id_division'],
-            'telefono' =>$request['telefono'],
-            'direccion' =>$request['direccion'],
-            'longitud' =>$request['longitud'],
-            'latitud' =>$request['latitud'],
-            'jerarqua' =>$request['jerarqua'],
-            //'activo' =>1,
-                ]);*/
-       return redirect()->route('farmacias.index')->with('success','Blog created successfully.');
+        $error = Validator::make($request->all(), $rules);
+
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+
+        $form_data = array(
+            'parent_id'        =>  $request->parent_id,
+            'id_division'         =>  $request->id_division,
+            'nomfarmacia'     =>  $request->nomfarmacia,
+            'telefono'     =>  $request->telefono,
+            'direccion'     =>  $request->direccion,
+            'longitud'     =>  $request->longitud,
+            'latitud'     =>  $request->latitud,
+            'jerarquia'     =>  $request->jerarquia
+        );
+
+        Farmacias::create($form_data);
+
+        return response()->json(['success' => 'Data Added successfully.']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Farmacia  $farmacia
+     * @param  \App\Farmacias  $farmacias
      * @return \Illuminate\Http\Response
      */
-    public function show(Farmacia $farmacia)
+    public function show(Farmacias $farmacias)
     {
         
-        return view('farmacias.show',compact('farmacia'));
+        
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Farmacia  $farmacia
+     * @param  \App\Farmacias  $farmacias
      * @return \Illuminate\Http\Response
      */
-    public function edit(Farmacia $farmacia)
+    public function edit($id)
     {
-        return view('farmacias.edit',compact('farmacia'));
+        if(request()->ajax())
+        {
+            $data = Farmacias::findOrFail($id);
+            return response()->json(['result' => $data]);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Farmacia  $farmacia
+     * @param  \App\Farmacias  $farmacias
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Farmacia $farmacia)
+    public function update(Request $request, Farmacias $farmacias)
     {
-        $request->validate([
-            'nomfarmacias'=>'required',
-            'id_division'=>'required',
-            'telefono'=>'required',
-            'direccion'=>'required',
-            //'activo'=>1,
-            'longitud'=>'required',
-            'latitud'=>'required',
-            'jerarqua'=>'required',
-            
-        ]);
+        $rules = array(
+            'parent_id'    =>  'required',
+            'id_division'     =>  'required',
+            'nomfarmacia'     =>  'required',
+            'telefono'     =>  'required',
+            'direccion'     =>  'required',
+            'longitud'     =>  'required',
+            'latitud'     =>  'required',
+            'jerarquia'     =>  'required'
+        );
 
+        $error = Validator::make($request->all(), $rules);
 
-        $farmacia->update($request->all());
-        return redirect()->route('farmacias.index')->with('success','Blog update successfully.');
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+
+        $form_data = array(
+            'parent_id'        =>  $request->parent_id,
+            'id_division'         =>  $request->id_division,
+            'nomfarmacia'     =>  $request->nomfarmacia,
+            'telefono'     =>  $request->telefono,
+            'direccion'     =>  $request->direccion,
+            'longitud'     =>  $request->longitud,
+            'latitud'     =>  $request->latitud,
+            'jerarquia'     =>  $request->jerarquia
+        );
+
+        Farmacias::whereId($request->hidden_id)->update($form_data);
+
+        return response()->json(['success' => 'Data is successfully updated']);
+
     }
 
     /**
@@ -125,9 +167,9 @@ class FarmaciaController extends Controller
      * @param  \App\Farmacia  $farmacia
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Farmacia $farmacia)
+    public function destroy($id)
     {
-        $farmacia->delete();
-        return redirect()->route('farmacias.index')->with('success','Blog delete successfully.');
+        $data = Farmacias::findOrFail($id);
+        $data->delete();
     }
 }

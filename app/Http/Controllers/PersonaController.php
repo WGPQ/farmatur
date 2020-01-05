@@ -1,23 +1,28 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Persona;
-use Validator;
-use Response;
-use Illuminate\Support\Facades\Input;
-use App\http\Requests;
 use Illuminate\Http\Request;
+use DataTables;
+use Validator;
 class PersonaController extends Controller
 {
-  public function index()
+  public function index(Request $request)
     {
-      $persona['personas'] = Persona::orderBy('id','asc')->paginate(8);
-   
-      return view('persona.index',$persona)->with('i',(request()->input('page',1)-1)*5);  
-
-      //$persona=Persona::latest()->paginate(5);
-       
-    //  return view('personas.index',compact('personas'))->with('i',(request()->input('page',1)-1)*5);
+      if($request->ajax())
+      {
+          $data = Persona::latest()->get();
+          return DataTables::of($data)
+                  ->addColumn('action', function($data){
+                      $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit</button>';
+                      $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm">Delete</button>';
+                      return $button;
+                  })
+                  ->rawColumns(['action'])
+                  ->make(true);
+      }
+      return view('persona.index');
     }
 
     /**
@@ -38,12 +43,32 @@ class PersonaController extends Controller
      */
     public function store(Request $request)
     {
-        $personaID = $request->persona_id;
-        $persona   =   Persona::updateOrCreate(['id' => $personaID],
-                    ['nombre' => $request->nombre, 'cedula' => $request->cedula, 'telefono' => $request->telefono,
-                    'email' => $request->email, 'genero' => $request->genero]);
-    
-        return Response::json($persona);
+      $rules = array(
+        'nombre'    =>  'required',
+        'cedula'     =>  'required',
+        'telefono'     =>  'required',
+        'email'     =>  'required',
+        'genero'     =>  'required'
+    );
+
+    $error = Validator::make($request->all(), $rules);
+
+    if($error->fails())
+    {
+        return response()->json(['errors' => $error->errors()->all()]);
+    }
+
+    $form_data = array(
+        'nombre'        =>  $request->nombre,
+        'cedula'         =>  $request->cedula,
+        'telefono'     =>  $request->telefono,
+        'email'     =>  $request->email,
+        'genero'     =>  $request->genero
+    );
+
+    Persona::create($form_data);
+
+    return response()->json(['success' => 'Data Added successfully.']);
     }
 
     /**
@@ -65,10 +90,11 @@ class PersonaController extends Controller
      */
     public function edit($id)
     {
-      $where = array('id' => $id);
-      $persona  = Persona::where($where)->first();
-
-      return Response::json($persona);
+      if(request()->ajax())
+        {
+            $data = Persona::findOrFail($id);
+            return response()->json(['result' => $data]);
+        }
     }
 
     /**
@@ -80,7 +106,32 @@ class PersonaController extends Controller
      */
     public function update(Request $request)
     {
-        //
+      $rules = array(
+        'nombre'    =>  'required',
+        'cedula'     =>  'required',
+        'telefono'     =>  'required',
+        'email'     =>  'required',
+        'genero'     =>  'required'
+    );
+
+    $error = Validator::make($request->all(), $rules);
+
+    if($error->fails())
+    {
+        return response()->json(['errors' => $error->errors()->all()]);
+    }
+
+    $form_data = array(
+      'nombre'        =>  $request->nombre,
+      'cedula'         =>  $request->cedula,
+      'telefono'     =>  $request->telefono,
+      'email'     =>  $request->email,
+      'genero'     =>  $request->genero
+  );
+
+    Persona::whereId($request->hidden_id)->update($form_data);
+
+    return response()->json(['success' => 'Data is successfully updated']);
     }
 
     /**
@@ -91,8 +142,7 @@ class PersonaController extends Controller
      */
     public function destroy($id)
     {
-      $persona = Persona::where('id',$id)->delete();
-   
-      return Response::json($persona);
+      $data = Persona::findOrFail($id);
+        $data->delete();
     }
 }

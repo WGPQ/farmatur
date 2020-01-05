@@ -19,7 +19,7 @@ class CreateTurnoTable extends Migration
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
             $table->timestamps();
-            $table->foreign('idfarmacia')->references('id')->on('farmacia');
+            $table->foreign('idfarmacia')->references('id')->on('farmacias');
 
         });
     }

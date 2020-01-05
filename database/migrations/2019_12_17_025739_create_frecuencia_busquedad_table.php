@@ -18,7 +18,7 @@ class CreateFrecuenciaBusquedadTable extends Migration
             $table->integer('idfarmacia')->unsigned()->nullable();
             $table->integer('numbusquedad');
             $table->timestamps();
-            $table->foreign('idfarmacia')->references('id')->on('farmacia');
+            $table->foreign('idfarmacia')->references('id')->on('farmacias');
         });
     }
 
