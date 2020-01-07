@@ -28,7 +28,6 @@
                         <th>Nombre</th>
                         <th>Cedula</th>
                         <th>Telefono</th>
-                        <th>Correo</th>
                         <th>Genero</th>
                         <th>Accion</th>
                     </tr>
@@ -72,15 +71,18 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-4">Correo : </label>
-                        <div class="col-md-8">
-                            <input type="text" name="email" id="email" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="control-label col-md-4">Genero : </label>
                         <div class="col-md-8">
-                            <input type="text" name="genero" id="genero" class="form-control" />
+                            <select name="genero" id="genero" class="form-control" >
+
+                                <option value="M">Masculino</option>
+
+                                <option value="F">Femenino</option>
+
+                                <option value="O">Otro</option>
+
+                            </select>
+                           <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
                         </div>
                     </div>
                     <br />
@@ -89,7 +91,7 @@
                         <input type="hidden" name="hidden_id" id="hidden_id" />
                         <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
                             value="Add" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -138,10 +140,6 @@ $(document).ready(function() {
                 name: 'telefono'
             },
             {
-                data: 'email',
-                name: 'email'
-            },
-            {
                 data: 'genero',
                 name: 'genero'
             },
@@ -157,6 +155,7 @@ $(document).ready(function() {
         $('.modal-title').text('Add New Record');
         $('#action_button').val('Add');
         $('#action').val('Add');
+       $('#persona_form').trigger("reset");
         $('#form_result').html('');
 
         $('#formModal').modal('show');
@@ -208,7 +207,6 @@ $(document).ready(function() {
                 $('#nombre').val(data.result.nombre);
                 $('#cedula').val(data.result.cedula);
                 $('#telefono').val(data.result.telefono);
-                $('#email').val(data.result.email);
                 $('#genero').val(data.result.genero);
                 $('#hidden_id').val(id);
                 $('.modal-title').text('Edit Record');

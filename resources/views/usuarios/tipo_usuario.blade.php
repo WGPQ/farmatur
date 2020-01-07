@@ -17,19 +17,15 @@
         <h3 align="center">How to Delete or Remove Data From Mysql in Laravel 6 using Ajax</h3>
         <br />
         <div align="right">
-            <button type="button" name="create_usuario" id="create_usuario" class="btn btn-success btn-sm">Create
+            <button type="button" name="create_tusuario" id="create_tusuario" class="btn btn-success btn-sm">Create
                 Record</button>
         </div>
         <br />
         <div class="table-responsive">
-            <table id="usuario_table" class="table table-bordered table-striped">
+            <table id="tusuario_table" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Contraseña</th>
-                        <th>Rol</th>
-                        <th>Activo</th>
                         <th>Accion</th>
                     </tr>
                 </thead>
@@ -51,57 +47,14 @@
             </div>
             <div class="modal-body">
                 <span id="form_result"></span>
-                <form method="post" id="persona_form" class="form-horizontal">
+                <form method="post" id="tusuario_form" class="form-horizontal">
                     @csrf
                     <div class="form-group">
                         <label class="control-label col-md-4">Nombre : </label>
                         <div class="col-md-8">
-                            <select name="idpersona" id="idpersona" class="form-control">
-                                @foreach($personas as $per)
-                                <option value="{{$per->id}}">{{$per->nombre}}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" name="nombre" id="nombre" class="form-control" />
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-4">Correo : </label>
-                        <div class="col-md-8">
-                            <input type="email" name="email" id="email" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-4">Contraseña : </label>
-                        <div class="col-md-8">
-                            <input type="text" name="password" id="password" class="form-control" />
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="control-label col-md-4">Rol : </label>
-                        <div class="col-md-8">
-                            <select name="rol" id="rol" class="form-control">
-                                @foreach($tusuarios as $tusuario)
-                                <option value="{{$tusuario->id}}">{{$tusuario->nombre}}</option>
-                                @endforeach
-                            </select>
-                            <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
-                        </div>
-                    </div>
-                    
-
-                    <div class="form-group">
-                        <div class="col-md-6 col-md-offset-4">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="activo" id="activo" 
-                                        {{ old('remember') ? 'checked' : '' }}>
-                                    Activo
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
                     <br />
                     <div class="form-group" align="center">
                         <input type="hidden" name="action" id="action" value="Add" />
@@ -138,31 +91,15 @@
 <script>
 $(document).ready(function() {
 
-    $('#usuario_table').DataTable({
+    $('#tusuario_table').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('usuarios.index') }}",
+            url: "{{ route('tipo_usuarios.index') }}",
         },
         columns: [{
-                data: 'idpersona',
-                name: 'idpersona'
-            },
-            {
-                data: 'email',
-                name: 'email'
-            },
-            {
-                data: 'password',
-                name: 'password'
-            },
-            {
-                data: 'rol',
-                name: 'rol'
-            },
-            {
-                data: 'activo',
-                name: 'activo'
+                data: 'nombre',
+                name: 'nombre'
             },
             {
                 data: 'action',
@@ -172,26 +109,26 @@ $(document).ready(function() {
         ]
     });
 
-    $('#create_usuario').click(function() {
+    $('#create_tusuario').click(function() {
         $('.modal-title').text('Add New Record');
         $('#action_button').val('Add');
         $('#action').val('Add');
-        $('#persona_form').trigger("reset");
+       $('#tipo_usuario_form').trigger("reset");
         $('#form_result').html('');
 
         $('#formModal').modal('show');
     });
 
-    $('#usuario_form').on('submit', function(event) {
+    $('#tusuario_form').on('submit', function(event) {
         event.preventDefault();
         var action_url = '';
 
         if ($('#action').val() == 'Add') {
-            action_url = "{{ route('usuarios.store') }}";
+            action_url = "{{ route('tipo_usuarios.store') }}";
         }
 
         if ($('#action').val() == 'Edit') {
-            action_url = "{{ route('usuarios.update') }}";
+            action_url = "{{ route('tipo_usuarios.update') }}";
         }
 
         $.ajax({
@@ -210,8 +147,8 @@ $(document).ready(function() {
                 }
                 if (data.success) {
                     html = '<div class="alert alert-success">' + data.success + '</div>';
-                    $('#usuario_form')[0].reset();
-                    $('#usuario_table').DataTable().ajax.reload();
+                    $('#tusuario_form')[0].reset();
+                    $('#tusuario_table').DataTable().ajax.reload();
                 }
                 $('#form_result').html(html);
             }
@@ -222,14 +159,10 @@ $(document).ready(function() {
         var id = $(this).attr('id');
         $('#form_result').html('');
         $.ajax({
-            url: "/usuarios/" + id + "/edit",
+            url: "/tipo_usuarios/" + id + "/edit",
             dataType: "json",
             success: function(data) {
-                $('#idpersona').val(data.result.idpersona);
-                $('#email').val(data.result.email);
-                $('#password').val(data.result.password);
-                $('#rol').val(data.result.rol);
-                $('#activo').val(data.result.activo);
+                $('#nombre').val(data.result.nombre);
                 $('#hidden_id').val(id);
                 $('.modal-title').text('Edit Record');
                 $('#action_button').val('Edit');
@@ -249,13 +182,13 @@ $(document).ready(function() {
 
     $('#ok_button').click(function() {
         $.ajax({
-            url: "usuarios/destroy/" + user_id,
+            url: "tipo_usuarios/destroy/" + user_id,
             beforeSend: function() {
                 $('#ok_button').text('Deleting...');
             },
             success: function(data) {
                 $('#confirmModal').modal('hide');
-                $('#usuario_table').DataTable().ajax.reload();
+                $('#tusuario_table').DataTable().ajax.reload();
                 setTimeout(function() {
                     // alert('Data Deleted');
                 }, 2000);

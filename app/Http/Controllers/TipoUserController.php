@@ -2,25 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Persona;
 use App\Tipos_usuario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-
 use DataTables;
 use Validator;
 
-class UsuarioController extends Controller
+class TipoUserController extends Controller
 {
-
-
-
-    
-    /*public function __construct()
-     {
-         $this->middleware('auth');
-     }*/
     /**
      * Display a listing of the resource.
      *
@@ -28,12 +16,9 @@ class UsuarioController extends Controller
      */
     public function index(Request $request)
     {
-        $personas = Persona::all();
-        $tusuarios = Tipos_usuario::all();
         if($request->ajax())
         {
-            $data = User::latest()->get();
-            
+            $data = Tipos_usuario::latest()->get();
             return DataTables::of($data)
                     ->addColumn('action', function($data){
                         $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit</button>';
@@ -43,8 +28,7 @@ class UsuarioController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('usuarios.index',compact('personas','tusuarios'));
-        
+        return view('usuarios.tipo_usuario');
     }
 
     /**
@@ -54,7 +38,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-    //
+        //
     }
 
     /**
@@ -66,11 +50,7 @@ class UsuarioController extends Controller
     public function store(Request $request)
     {
         $rules = array(
-            'idpersona'    =>  'required',
-            'email'     =>  'required',
-            'password'     =>  'required',
-            'rol'     =>  'required',
-            'activo'     =>  'required'
+            'nombre'    =>  'required'
         );
     
         $error = Validator::make($request->all(), $rules);
@@ -79,47 +59,38 @@ class UsuarioController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        
-    if(isset($request['activo']) and $request['activo']=='on'){
-        $uactivo=1;
-    }else{
-        $uactivo=0; 
-    }
+    
         $form_data = array(
-            'idpersona'        =>  $request->idpersona,
-            'email'         =>  $request->email,
-            'password'     =>  Hash::make($request->password),
-            'rol'     =>  $request->rol,
-            'activo'     =>  $uactivo
+            'nombre'        =>  $request->nombre
         );
-
-        User::create($form_data);
+    
+        Tipos_usuario::create($form_data);
     
         return response()->json(['success' => 'Data Added successfully.']);
-}
+    }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Usuario  $usuario
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Usuario $usuario)
+    public function show($id)
     {
-
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Usuario  $usuario
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Usuario $usuario)
+    public function edit($id)
     {
-          if(request()->ajax())
+        if(request()->ajax())
         {
-            $data = User::findOrFail($id);
+            $data = Tipos_usuario::findOrFail($id);
             return response()->json(['result' => $data]);
         }
     }
@@ -128,17 +99,13 @@ class UsuarioController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Usuario  $usuario
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Usuario $usuario)
+    public function update(Request $request)
     {
         $rules = array(
-            'idpersona'    =>  'required',
-            'email'     =>  'required',
-            'password'     =>  'required',
-            'rol'     =>  'required',
-            'activo'     =>  'required'
+            'nombre'    =>  'required'
         );
     
         $error = Validator::make($request->all(), $rules);
@@ -148,16 +115,11 @@ class UsuarioController extends Controller
             return response()->json(['errors' => $error->errors()->all()]);
         }
     
-      
         $form_data = array(
-            'idpersona'        =>  $request->idpersona,
-            'email'         =>  $request->email,
-            'password'     =>  Hash::make($request->password),
-            'rol'     =>  $request->rol,
-            'activo'     =>  $request->activo
-        );
+          'nombre'        =>  $request->nombre
+      );
     
-        User::whereId($request->hidden_id)->update($form_data);
+      Tipos_usuario::whereId($request->hidden_id)->update($form_data);
     
         return response()->json(['success' => 'Data is successfully updated']);
     }
@@ -165,12 +127,12 @@ class UsuarioController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Usuario  $usuario
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Usuario $usuario)
+    public function destroy($id)
     {
-        $data = User::findOrFail($id);
+        $data = Tipos_usuario::findOrFail($id);
         $data->delete();
     }
 }

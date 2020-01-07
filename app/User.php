@@ -25,7 +25,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['nombre','cedula', 'email','genero', 'tipouser',  'password'];
+    protected $fillable = ['idpersona','email','password','rol','activo'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -34,17 +34,5 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token'];
 
-    public function tipo($idtipo)
-    {
-      $resul=TipoUsuario::find($idtipo);
-      if(isset($resul)){
-       return $resul->nombre;
-      }
-      else
-      {
-        return "sin definir";
-      }
-      
-    }
 
 }

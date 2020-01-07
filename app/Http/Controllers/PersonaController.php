@@ -47,9 +47,10 @@ class PersonaController extends Controller
         'nombre'    =>  'required',
         'cedula'     =>  'required',
         'telefono'     =>  'required',
-        'email'     =>  'required',
         'genero'     =>  'required'
     );
+
+  
 
     $error = Validator::make($request->all(), $rules);
 
@@ -62,7 +63,6 @@ class PersonaController extends Controller
         'nombre'        =>  $request->nombre,
         'cedula'         =>  $request->cedula,
         'telefono'     =>  $request->telefono,
-        'email'     =>  $request->email,
         'genero'     =>  $request->genero
     );
 
@@ -110,7 +110,6 @@ class PersonaController extends Controller
         'nombre'    =>  'required',
         'cedula'     =>  'required',
         'telefono'     =>  'required',
-        'email'     =>  'required',
         'genero'     =>  'required'
     );
 
@@ -125,7 +124,6 @@ class PersonaController extends Controller
       'nombre'        =>  $request->nombre,
       'cedula'         =>  $request->cedula,
       'telefono'     =>  $request->telefono,
-      'email'     =>  $request->email,
       'genero'     =>  $request->genero
   );
 

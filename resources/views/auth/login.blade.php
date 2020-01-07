@@ -45,39 +45,38 @@
                             <i class="fa fa-envelope" aria-hidden="true"></i>
                         </span>
                         @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
                         <input class="input100" type="password" name="password" placeholder="Contraseña">
-                       
+
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
 
                         @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    
+                    <div class="text-center p-t-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="remember" id="remember"
+                                {{ old('remember') ? 'checked' : '' }}>
+
+                            <label class="txt2" for="remember">
+                                {{ __('Recordar mi contraseña') }}
+                            </label>
+                        </div>
                     </div>
 
-                    
-                            <div class="text-center p-t-12">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                        {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="txt2" for="remember">
-                                        {{ __('Recordar mi contraseña') }}
-                                    </label>
-                                </div>
-                            </div>
-                        
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn">
                             INGRESAR AL SISTEMA
