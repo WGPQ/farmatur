@@ -20,6 +20,12 @@ Route::get('/mapa', function () {
     return view('farmacias.mapa');
 });
 
+Route::get('/animalito', function () {
+    return view('animal.index');
+});
+
+Route::resource('animal','AnimaController');
+
 Route::resource('divpoliticas','DivpoliticaController');
 Auth::routes();
 

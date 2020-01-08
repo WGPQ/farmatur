@@ -32,17 +32,23 @@ class UsuarioController extends Controller
         $tusuarios = Tipos_usuario::all();
         if($request->ajax())
         {
-            $data = User::latest()->get();
+            $data = User::latest()->get(); 
             
-            return DataTables::of($data)
-                    ->addColumn('action', function($data){
-                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit</button>';
+            return DataTables::of($data)->addColumn('nombre',function($data){
+                return $data->persona['nombre'];
+            }) 
+
+            ->addColumn('rusuario',function($data){
+                return $data->tipos_usuario['nombre'];
+            }) 
+            ->addColumn('action', function($data){
+                        
+                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit2</button>';
                         $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm">Delete</button>';
-                        return $button;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
+                        return $button; })->rawColumns(['action']) ->make(true);
+                    
         }
+
         return view('usuarios.index',compact('personas','tusuarios'));
         
     }
@@ -115,7 +121,7 @@ class UsuarioController extends Controller
      * @param  \App\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
-    public function edit(Usuario $usuario)
+    public function edit($id)
     {
           if(request()->ajax())
         {
@@ -168,7 +174,7 @@ class UsuarioController extends Controller
      * @param  \App\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Usuario $usuario)
+    public function destroy($id)
     {
         $data = User::findOrFail($id);
         $data->delete();

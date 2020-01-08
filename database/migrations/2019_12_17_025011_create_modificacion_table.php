@@ -21,7 +21,7 @@ class CreateModificacionTable extends Migration
             $table->string('valor_nuevo',100);
             $table->date('fecha');
             $table->timestamps();
-            $table->foreign('idadmin')->references('id')->on('adiministrador');
+            $table->foreign('idadmin')->references('id')->on('users');
             $table->foreign('idfarmacia')->references('id')->on('farmacias');
         });
     }

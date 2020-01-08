@@ -51,7 +51,7 @@
             </div>
             <div class="modal-body">
                 <span id="form_result"></span>
-                <form method="post" id="persona_form" class="form-horizontal">
+                <form method="post" id="usuario_form" class="form-horizontal">
                     @csrf
                     <div class="form-group">
                         <label class="control-label col-md-4">Nombre : </label>
@@ -73,7 +73,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-4">Contraseña : </label>
                         <div class="col-md-8">
-                            <input type="text" name="password" id="password" class="form-control" />
+                            <input type="password" name="password" id="password" class="form-control" />
                         </div>
                     </div>
                     
@@ -137,15 +137,14 @@
 
 <script>
 $(document).ready(function() {
-
     $('#usuario_table').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('usuarios.index') }}",
+            url: "{{ route('usuarios.index') }}",      
         },
         columns: [{
-                data: 'idpersona',
+                data: 'nombre',
                 name: 'idpersona'
             },
             {
@@ -157,7 +156,7 @@ $(document).ready(function() {
                 name: 'password'
             },
             {
-                data: 'rol',
+                data: 'rusuario',
                 name: 'rol'
             },
             {
@@ -180,6 +179,7 @@ $(document).ready(function() {
         $('#form_result').html('');
 
         $('#formModal').modal('show');
+        
     });
 
     $('#usuario_form').on('submit', function(event) {

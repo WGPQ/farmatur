@@ -134,7 +134,7 @@
                             </div>
                             <div class=" col-sm-4">
                                 <label class="control-label col-md-8">ZONA DE ANALISIS</label>
-                                <div id="mimapa">
+                                <div id="map">
                                 </div>
                                 <script src="js/usuario_mapaCode.js"></script>
                             </div>

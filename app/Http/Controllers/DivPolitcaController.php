@@ -54,13 +54,8 @@ class DivPolitcaController extends Controller
     {
         $rules = array(
             'parent_id'    =>  'required',
-            'id_division'     =>  'required',
-            'nomfarmacia'     =>  'required',
-            'telefono'     =>  'required',
-            'direccion'     =>  'required',
-            'longitud'     =>  'required',
-            'latitud'     =>  'required',
-            'jerarquia'     =>  'required'
+            'nomdivision'     =>  'required',
+            'nivel'     =>  'required'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -124,13 +119,8 @@ class DivPolitcaController extends Controller
     {
         $rules = array(
             'parent_id'    =>  'required',
-            'id_division'     =>  'required',
-            'nomfarmacia'     =>  'required',
-            'telefono'     =>  'required',
-            'direccion'     =>  'required',
-            'longitud'     =>  'required',
-            'latitud'     =>  'required',
-            'jerarquia'     =>  'required'
+            'nomdivision'     =>  'required',
+            'nivel'     =>  'required'
         );
 
         $error = Validator::make($request->all(), $rules);
