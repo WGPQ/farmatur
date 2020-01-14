@@ -1,4 +1,4 @@
-<html>
+<!--<html>
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,34 +11,37 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-    <div class="container">
-        <br />
-        <h3 align="center">How to Delete or Remove Data From Mysql in Laravel 6 using Ajax</h3>
-        <br />
-        <div align="right">
-            <button type="button" name="create_divisionp" id="create_divisionp" class="btn btn-success btn-sm">Create
-                Record</button>
-        </div>
-        <br />
-        <div class="table-responsive">
-            <table id="divisionp_table" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Canton</th>
-                        <th>Parroquia</th>
-                        <th>Nivel</th>
-                        <th>Accion</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <br />
-        <br />
-    </div>
-</body>
+<body>-->
+@extends('layouts.app2')
 
-</html>
+@section('content')
+<div class="container">
+    <br />
+    <h3 align="center">REGISTRO DE DIVISION POLITICA ADMINISTRAIVA DEL ECUADOR</h3>
+    <br />
+    <div align="right">
+        <button type="button" name="create_divisionp" id="create_divisionp" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Crear Nueva
+            Ciudad</button>
+    </div>
+    <br />
+    <div class="table-responsive">
+        <table id="divisionp_table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Canton</th>
+                    <th>Parroquia</th>
+                    <th>Nivel</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <br />
+    <br />
+</div>
+<!--</body>
+
+</html>-->
 
 <div id="formModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -56,11 +59,10 @@
                         <label class="control-label col-md-4">Canton : </label>
                         <div class="col-md-8">
                             <select name="parent_id" id="parent_id" class="form-control">
-                                @foreach($data as $div_pol)
-                                @if({{$div_pol->$parent_id}}==null)
+                                <option value=""> </option>
+                                @foreach($ciudadpdre as $div_pol)
                                 <option value="{{$div_pol->id}}">{{$div_pol->nomdivision}}</option>
                                 @endforeach
-                                @endif
                             </select>
                             <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
                         </div>
@@ -81,8 +83,8 @@
                     <div class="form-group" align="center">
                         <input type="hidden" name="action" id="action" value="Add" />
                         <input type="hidden" name="hidden_id" id="hidden_id" />
-                        <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                            value="Add" />
+                        <button type="submit" name="action_button" id="action_button" class="btn btn-warning"
+                            value="Add" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
 
@@ -123,12 +125,12 @@ $(document).ready(function() {
             url: "{{ route('divpoliticas.index') }}",
         },
         columns: [{
-                data: 'parent_id',
+                data: 'cidudad',
                 name: 'parent_id'
             },
             {
-                data: 'nomdivion',
-                name: 'nomdivion'
+                data: 'nomdivision',
+                name: 'nomdivision'
             },
             {
                 data: 'nivel',
@@ -146,7 +148,7 @@ $(document).ready(function() {
         $('.modal-title').text('Add New Record');
         $('#action_button').val('Add');
         $('#action').val('Add');
-        $('#persona_form').trigger("reset");
+        $('#divisionp_form').trigger("reset");
         $('#form_result').html('');
 
         $('#formModal').modal('show');
@@ -233,3 +235,4 @@ $(document).ready(function() {
 
 });
 </script>
+@endsection

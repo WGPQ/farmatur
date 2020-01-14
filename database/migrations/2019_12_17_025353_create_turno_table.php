@@ -13,7 +13,7 @@ class CreateTurnoTable extends Migration
      */
     public function up()
     {
-        Schema::create('turno', function (Blueprint $table) {
+        Schema::create('turnos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('idfarmacia')->unsigned()->nullable();
             $table->date('fecha_inicio');
@@ -31,6 +31,6 @@ class CreateTurnoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('turno');
+        Schema::dropIfExists('turnos');
     }
 }

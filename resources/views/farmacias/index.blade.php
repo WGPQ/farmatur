@@ -1,4 +1,4 @@
-<html>
+<!--<html>
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,40 +33,41 @@
     }
     </style>
 </head>
+<body>-->
+@extends('layouts.app2')
 
-<body>
-    <div class="container">
-        <br />
-        <h3 align="center">How to Delete or Remove Data From Mysql in Laravel 6 using Ajax</h3>
-        <br />
-        <div align="right">
-            <button type="button" name="create_farmacia" id="create_farmacia" class="btn btn-success btn-sm">Create
-                Record</button>
-        </div>
-        <br />
-        <div class="table-responsive">
-            <table id="farmacia_table" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Ciudad</th>
-                        <th>Principal</th>
-                        <th>Telefono</th>
-                        <th>Direccion</th>
-                        <th>Jararquia</th>
-                        <th>Latitud</th>
-                        <th>Longitud</th>
-                        <th>Accion</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <br />
-        <br />
+@section('content')
+<div class="container">
+    <br />
+    <h3 align="center">REGISTRO DE FARMACIAS</h3>
+    <br />
+    <div align="right">
+        <button type="button" name="create_farmacia" id="create_farmacia" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Crear Nueva
+            Farmacia</button>
     </div>
-</body>
+    <br />
+    <div class="table-responsive">
+        <table id="farmacia_table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Ciudad</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                    <th>Jararquia</th>
+                    <th>Latitud</th>
+                    <th>Longitud</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <br />
+    <br />
+</div>
+<!--</body>
 
-</html>
+</html>-->
 
 <div id="formModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg ">
@@ -89,17 +90,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-md-4">Farmacia Principal : </label>
-                                    <div class="col-md-8">
-                                        <input type="text" name="parent_id" id="parent_id" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label class="control-label col-md-4">Ciudad : </label>
                                     <div class="col-md-8">
-                                        <input type="text" name="id_division" id="id_division" class="form-control" />
+                                        <select name="id_division" id="id_division" class="form-control">
+                                            @foreach($ciudadp as $div_pol)
+                                            <option value="{{$div_pol->id}}">{{$div_pol->nomdivision}}</option>
+                                            @endforeach
+                                        </select>
+                                        <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
                                     </div>
                                 </div>
+                                
                                 <div class="form-group">
                                     <label class="control-label col-md-4">Telefono : </label>
                                     <div class="col-md-8">
@@ -134,18 +135,19 @@
                             </div>
                             <div class=" col-sm-4">
                                 <label class="control-label col-md-8">ZONA DE ANALISIS</label>
-                                <div id="map">
-                                </div>
-                                <script src="js/usuario_mapaCode.js"></script>
+                                <!--<div id="map">
+                                </div>-->
+
                             </div>
                         </div>
                         <br />
                         <div class="form-group" align="center">
                             <input type="hidden" name="action" id="action" value="Add" />
                             <input type="hidden" name="hidden_id" id="hidden_id" />
-                            <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                                value="Add" />
-                        </div>
+                            <button type="submit" name="action_button" id="action_button" class="btn btn-warning"
+                            value="Add" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </div>
 
                     </form>
 
@@ -187,17 +189,14 @@ $(document).ready(function() {
         ajax: {
             url: "{{ route('farmacias.index') }}",
         },
-        columns: [{
-                data: 'parent_id',
-                name: 'parent_id'
-            },
-            {
-                data: 'id_division',
-                name: 'id_division'
-            },
+        columns: [
             {
                 data: 'nomfarmacia',
                 name: 'nomfarmacia'
+            },
+            {
+                data: 'ciudad',
+                name: 'id_division'
             },
             {
                 data: 'telefono',
@@ -232,7 +231,6 @@ $(document).ready(function() {
         $('#action_button').val('Add');
         $('#action').val('Add');
         $('#form_result').html('');
-
         $('#formModal').modal('show');
     });
 
@@ -281,7 +279,6 @@ $(document).ready(function() {
             dataType: "json",
             success: function(data) {
                 $('#nomfarmacia').val(data.result.nomfarmacia);
-                $('#parent_id').val(data.result.parent_id);
                 $('#id_division').val(data.result.id_division);
                 $('#telefono').val(data.result.telefono);
                 $('#direccion').val(data.result.direccion);
@@ -323,3 +320,4 @@ $(document).ready(function() {
 
 });
 </script>
+@endsection

@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\animal;
+use App\User;
+use App\Persona;
 use Illuminate\Http\Request;
-
-class AnimaController extends Controller
+use Validator;
+class InicioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,10 +14,38 @@ class AnimaController extends Controller
      */
     public function index()
     {
-        $animals=animal::all();
-        return view('animal.index',compact('animals'));
+        return view('inicio');
     }
 
+
+
+    public function verificaremail(Request $request){
+
+       
+       /* $rules = array(
+            'email'    =>  'required'
+        );
+        $usuario=User::all();
+        $error = Validator::make($request->all(), $rules);
+
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }else{
+            if ($usuario->verificar($usuario,$request->email)==true){
+                return view('auth.login',compact('usuario'));
+            }else{
+                return redirect()->route('auth.inicio')->with('success','Blog created successfully.');
+            }
+        }
+        
+
+        
+
+        Turnos::create($form_data);
+
+        return response()->json(['success' => 'Data Added successfully.']);*/
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -24,7 +53,7 @@ class AnimaController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
@@ -35,7 +64,8 @@ class AnimaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        return view('/home');
     }
 
     /**

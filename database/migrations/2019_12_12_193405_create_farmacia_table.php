@@ -15,7 +15,6 @@ class CreateFarmaciaTable extends Migration
     {
         Schema::create('farmacias', function (Blueprint $table) {
             $table->increments('id');
-           $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('id_division')->unsigned()->nullable();
             $table->string('nomfarmacia',100);
             $table->string('telefono',20);
@@ -25,8 +24,7 @@ class CreateFarmaciaTable extends Migration
            // $table->integer('activo');
             $table->string('jerarquia',100);
             $table->timestamps();
-            $table->foreign('parent_id')->references('id')->on('farmacias');
-            $table->foreign('id_division')->references('id')->on('divpolitica');
+            $table->foreign('id_division')->references('id')->on('divpoliticas');
         });
     }
 

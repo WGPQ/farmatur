@@ -1,17 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Turnos;
 use App\Farmacias;
-use App\Divpolitica;
 use Illuminate\Http\Request;
 use DataTables;
 use Validator;
 
-class FarmaciaController extends Controller
+class TurnosController extends Controller
 {
-
-    
     public function __construct()
      {
          $this->middleware('auth');
@@ -23,12 +20,12 @@ class FarmaciaController extends Controller
      */
     public function index(Request $request)
     {
-        $ciudadp=Divpolitica::all();
+        $farmacias=Farmacias::all();
         if($request->ajax())
         {
-            $data = Farmacias::latest()->get();
-            return DataTables::of($data)->addColumn('ciudad',function($data){
-                return $data->Ciudad['nomdivision'];
+            $data = Turnos::latest()->get();
+            return DataTables::of($data)->addColumn('farmacia',function($data){
+                return $data->Farmacia['nomfarmacia'];
             })
                     ->addColumn('action', function($data){
                         $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"> Editar</button>';
@@ -38,7 +35,7 @@ class FarmaciaController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('farmacias.index',compact('ciudadp'));
+        return view('turnos.index',compact('farmacias'));
     }
 
     /**
@@ -60,13 +57,9 @@ class FarmaciaController extends Controller
     public function store(Request $request)
     {
         $rules = array(
-            'id_division'     =>  'required',
-            'nomfarmacia'     =>  'required',
-            'telefono'     =>  'required',
-            'direccion'     =>  'required',
-            'longitud'     =>  'required',
-            'latitud'     =>  'required',
-            'jerarquia'     =>  'required'
+            'idfarmacia'    =>  'required',
+            'fecha_inicio'     =>  'required',
+            'fecha_fin'     =>  'required'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -75,18 +68,14 @@ class FarmaciaController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-
+    
         $form_data = array(
-            'id_division'         =>  $request->id_division,
-            'nomfarmacia'     =>  $request->nomfarmacia,
-            'telefono'     =>  $request->telefono,
-            'direccion'     =>  $request->direccion,
-            'longitud'     =>  $request->longitud,
-            'latitud'     =>  $request->latitud,
-            'jerarquia'     =>  $request->jerarquia
+            'idfarmacia'        =>  $request->idfarmacia,
+            'fecha_inicio'         =>  $request->fecha_inicio,
+            'fecha_fin'     =>  $request->fecha_fin,
         );
 
-        Farmacias::create($form_data);
+        Turnos::create($form_data);
 
         return response()->json(['success' => 'Data Added successfully.']);
     }
@@ -113,7 +102,7 @@ class FarmaciaController extends Controller
     {
         if(request()->ajax())
         {
-            $data = Farmacias::findOrFail($id);
+            $data = Turnos::findOrFail($id);
             return response()->json(['result' => $data]);
         }
     }
@@ -121,20 +110,14 @@ class FarmaciaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Farmacias  $farmacias
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Farmacias $farmacias)
+    public function update(Request $request)
     {
         $rules = array(
-            'id_division'     =>  'required',
-            'nomfarmacia'     =>  'required',
-            'telefono'     =>  'required',
-            'direccion'     =>  'required',
-            'longitud'     =>  'required',
-            'latitud'     =>  'required',
-            'jerarquia'     =>  'required'
+            'idfarmacia'    =>  'required',
+            'fecha_inicio'     =>  'required',
+            'fecha_fin'     =>  'required'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -145,16 +128,12 @@ class FarmaciaController extends Controller
         }
 
         $form_data = array(
-            'id_division'         =>  $request->id_division,
-            'nomfarmacia'     =>  $request->nomfarmacia,
-            'telefono'     =>  $request->telefono,
-            'direccion'     =>  $request->direccion,
-            'longitud'     =>  $request->longitud,
-            'latitud'     =>  $request->latitud,
-            'jerarquia'     =>  $request->jerarquia
+            'idfarmacia'        =>  $request->idfarmacia,
+            'fecha_inicio'         =>  $request->fecha_inicio,
+            'fecha_fin'     =>  $request->fecha_fin,
         );
 
-        Farmacias::whereId($request->hidden_id)->update($form_data);
+        Turnos::whereId($request->hidden_id)->update($form_data);
 
         return response()->json(['success' => 'Data is successfully updated']);
 
@@ -163,12 +142,11 @@ class FarmaciaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Farmacia  $farmacia
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $data = Farmacias::findOrFail($id);
+        $data = Turnos::findOrFail($id);
         $data->delete();
     }
+
 }

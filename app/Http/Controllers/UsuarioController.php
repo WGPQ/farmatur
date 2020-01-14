@@ -7,7 +7,8 @@ use App\Persona;
 use App\Tipos_usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use Mail;
+use Session;
 use DataTables;
 use Validator;
 
@@ -17,10 +18,10 @@ class UsuarioController extends Controller
 
 
     
-    /*public function __construct()
+    public function __construct()
      {
          $this->middleware('auth');
-     }*/
+     }
     /**
      * Display a listing of the resource.
      *
@@ -42,10 +43,9 @@ class UsuarioController extends Controller
                 return $data->tipos_usuario['nombre'];
             }) 
             ->addColumn('action', function($data){
-                        
-                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit2</button>';
-                        $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm">Delete</button>';
-                        return $button; })->rawColumns(['action']) ->make(true);
+                $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"> Editar</button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"> Eliminar</button>';
+                return $button; })->rawColumns(['action']) ->make(true);
                     
         }
 
@@ -62,7 +62,6 @@ class UsuarioController extends Controller
     {
     //
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -74,7 +73,6 @@ class UsuarioController extends Controller
         $rules = array(
             'idpersona'    =>  'required',
             'email'     =>  'required',
-            'password'     =>  'required',
             'rol'     =>  'required',
             'activo'     =>  'required'
         );
@@ -91,11 +89,19 @@ class UsuarioController extends Controller
     }else{
         $uactivo=0; 
     }
+   $to_name='William Puma';
+    $to_email=$request->email;
+    $pas=substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
+    $data= array('name'=> "Este es tu contraseña: $pas" ,'body'=>"Test");
+    Mail::send('email',$data,function($message) use ($to_name,$to_email){
+        $message->subject('BIENVENIDO A FARMATURN');
+        $message->to($to_email);
+    });
         $form_data = array(
             'idpersona'        =>  $request->idpersona,
             'email'         =>  $request->email,
-            'password'     =>  Hash::make($request->password),
             'rol'     =>  $request->rol,
+            'password' => Hash::make($pas),
             'activo'     =>  $uactivo
         );
 

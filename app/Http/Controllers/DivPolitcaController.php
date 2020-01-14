@@ -1,17 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Division_Politica;
-
+use App\Divpolitica;
 use Illuminate\Http\Request;
 use DataTables;
 use Validator;
 class DivPolitcaController extends Controller
 {
-/*public function __construct()
+public function __construct()
      {
          $this->middleware('auth');
-     }*/
+     }
     /**
      * Display a listing of the resource.
      *
@@ -19,19 +18,22 @@ class DivPolitcaController extends Controller
      */
     public function index(Request $request)
     {
+        $ciudadpdre=Divpolitica::all();
         if($request->ajax())
         {
-            $data = Division_Politica::latest()->get();
-            return DataTables::of($data)
+            $data = Divpolitica::latest()->get();
+            return DataTables::of($data)->addColumn('cidudad',function($data){
+                return $data->Parent['nomdivision'];
+            })
                     ->addColumn('action', function($data){
-                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit</button>';
-                        $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm">Delete</button>';
+                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"> Editar</button>';
+                        $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"> Eliminar</button>';
                         return $button;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('divpoliticas.index',compact('data'));
+        return view('divpoliticas.index',compact('ciudadpdre'));
     }
 
     /**
@@ -53,7 +55,7 @@ class DivPolitcaController extends Controller
     public function store(Request $request)
     {
         $rules = array(
-            'parent_id'    =>  'required',
+           // 'parent_id'    =>  'required',
             'nomdivision'     =>  'required',
             'nivel'     =>  'required'
         );
@@ -64,19 +66,14 @@ class DivPolitcaController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-
+    
         $form_data = array(
             'parent_id'        =>  $request->parent_id,
-            'id_division'         =>  $request->id_division,
-            'nomfarmacia'     =>  $request->nomfarmacia,
-            'telefono'     =>  $request->telefono,
-            'direccion'     =>  $request->direccion,
-            'longitud'     =>  $request->longitud,
-            'latitud'     =>  $request->latitud,
-            'jerarquia'     =>  $request->jerarquia
+            'nomdivision'         =>  $request->nomdivision,
+            'nivel'     =>  $request->nivel,
         );
 
-        Farmacias::create($form_data);
+        Divpolitica::create($form_data);
 
         return response()->json(['success' => 'Data Added successfully.']);
     }
@@ -103,7 +100,7 @@ class DivPolitcaController extends Controller
     {
         if(request()->ajax())
         {
-            $data = Farmacias::findOrFail($id);
+            $data = Divpolitica::findOrFail($id);
             return response()->json(['result' => $data]);
         }
     }
@@ -111,11 +108,9 @@ class DivPolitcaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Farmacias  $farmacias
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Farmacias $farmacias)
+    public function update(Request $request)
     {
         $rules = array(
             'parent_id'    =>  'required',
@@ -132,16 +127,11 @@ class DivPolitcaController extends Controller
 
         $form_data = array(
             'parent_id'        =>  $request->parent_id,
-            'id_division'         =>  $request->id_division,
-            'nomfarmacia'     =>  $request->nomfarmacia,
-            'telefono'     =>  $request->telefono,
-            'direccion'     =>  $request->direccion,
-            'longitud'     =>  $request->longitud,
-            'latitud'     =>  $request->latitud,
-            'jerarquia'     =>  $request->jerarquia
+            'nomdivision'         =>  $request->nomdivision,
+            'nivel'     =>  $request->nivel,
         );
 
-        Farmacias::whereId($request->hidden_id)->update($form_data);
+        Divpolitica::whereId($request->hidden_id)->update($form_data);
 
         return response()->json(['success' => 'Data is successfully updated']);
 
@@ -150,12 +140,10 @@ class DivPolitcaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Farmacia  $farmacia
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $data = Farmacias::findOrFail($id);
+        $data = Divpolitica::findOrFail($id);
         $data->delete();
     }
 }

@@ -1,4 +1,4 @@
-<html>
+<!--<html>
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,14 +11,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body>-->
+@extends('layouts.app2')
+
+@section('content')
     <div class="container">
         <br />
-        <h3 align="center">How to Delete or Remove Data From Mysql in Laravel 6 using Ajax</h3>
+        <h3 align="center">REGISTRO DE PERSONAS</h3>
         <br />
         <div align="right">
-            <button type="button" name="create_persona" id="create_persona" class="btn btn-success btn-sm">Create
-                Record</button>
+            <button type="button" name="create_persona" id="create_persona" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-plus"></span> Crear Nueva
+                Persona</button>
         </div>
         <br />
         <div class="table-responsive">
@@ -37,9 +40,9 @@
         <br />
         <br />
     </div>
-</body>
+<!--</body>
 
-</html>
+</html>-->
 
 <div id="formModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -89,8 +92,8 @@
                     <div class="form-group" align="center">
                         <input type="hidden" name="action" id="action" value="Add" />
                         <input type="hidden" name="hidden_id" id="hidden_id" />
-                        <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                            value="Add" />
+                        <button type="submit" name="action_button" id="action_button" class="btn btn-warning"
+                            value="Add" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
@@ -243,3 +246,4 @@ $(document).ready(function() {
 
 });
 </script>
+@endsection

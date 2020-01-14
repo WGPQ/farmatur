@@ -1,4 +1,4 @@
-<html>
+<!--<html>
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,14 +11,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body>-->
+@extends('layouts.app2')
+
+@section('content')
     <div class="container">
         <br />
-        <h3 align="center">How to Delete or Remove Data From Mysql in Laravel 6 using Ajax</h3>
+        <h3 align="center">REGISTRO DE USUARIOS</h3>
         <br />
         <div align="right">
-            <button type="button" name="create_usuario" id="create_usuario" class="btn btn-success btn-sm">Create
-                Record</button>
+            <button type="button" name="create_usuario" id="create_usuario" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Crear Nuevo
+                Usuaro</button>
         </div>
         <br />
         <div class="table-responsive">
@@ -27,7 +30,6 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Correo</th>
-                        <th>Contraseña</th>
                         <th>Rol</th>
                         <th>Activo</th>
                         <th>Accion</th>
@@ -70,13 +72,7 @@
                             <input type="email" name="email" id="email" class="form-control" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-4">Contraseña : </label>
-                        <div class="col-md-8">
-                            <input type="password" name="password" id="password" class="form-control" />
-                        </div>
-                    </div>
-                    
+
                     <div class="form-group">
                         <label class="control-label col-md-4">Rol : </label>
                         <div class="col-md-8">
@@ -85,16 +81,15 @@
                                 <option value="{{$tusuario->id}}">{{$tusuario->nombre}}</option>
                                 @endforeach
                             </select>
-                            <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
                         </div>
                     </div>
-                    
+
 
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="activo" id="activo" 
+                                    <input type="checkbox" name="activo" id="activo"
                                         {{ old('remember') ? 'checked' : '' }}>
                                     Activo
                                 </label>
@@ -106,8 +101,8 @@
                     <div class="form-group" align="center">
                         <input type="hidden" name="action" id="action" value="Add" />
                         <input type="hidden" name="hidden_id" id="hidden_id" />
-                        <input type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                            value="Add" />
+                        <button type="submit" name="action_button" id="action_button" class="btn btn-warning"
+                            value="Add" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
@@ -141,7 +136,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('usuarios.index') }}",      
+            url: "{{ route('usuarios.index') }}",
         },
         columns: [{
                 data: 'nombre',
@@ -150,10 +145,6 @@ $(document).ready(function() {
             {
                 data: 'email',
                 name: 'email'
-            },
-            {
-                data: 'password',
-                name: 'password'
             },
             {
                 data: 'rusuario',
@@ -175,11 +166,11 @@ $(document).ready(function() {
         $('.modal-title').text('Add New Record');
         $('#action_button').val('Add');
         $('#action').val('Add');
-        $('#persona_form').trigger("reset");
+        $('#usuario_form').trigger("reset");
         $('#form_result').html('');
 
         $('#formModal').modal('show');
-        
+
     });
 
     $('#usuario_form').on('submit', function(event) {
@@ -265,3 +256,4 @@ $(document).ready(function() {
 
 });
 </script>
+@endsection

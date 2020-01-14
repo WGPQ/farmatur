@@ -13,13 +13,13 @@ class CreateDivpoliticaTable extends Migration
      */
     public function up()
     {
-        Schema::create('divpolitica', function (Blueprint $table) {
+        Schema::create('divpoliticas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('parent_id')->unsigned()->nullable();
             $table->string('nomdivision',100);
             $table->integer('nivel');
             $table->timestamps();
-            $table->foreign('parent_id')->references('id')->on('divpolitica');
+            $table->foreign('parent_id')->references('id')->on('divpoliticas');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateDivpoliticaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('divpolitica');
+        Schema::dropIfExists('divpoliticas');
     }
 }

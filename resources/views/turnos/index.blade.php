@@ -15,31 +15,33 @@
 @extends('layouts.app2')
 
 @section('content')
-    <div class="container">
-        <br />
-        <h3 align="center">REGISTRO DE TIPOS DE USUARIOS</h3>
-        <br />
-        <div align="right">
-            <button type="button" name="create_tusuario" id="create_tusuario" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Crear Nuevo
-                Rol</button>
-        </div>
-        <br />
-        <div class="table-responsive">
-            <table id="tusuario_table" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Accion</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <br />
-        <br />
+<div class="container">
+    <br />
+    <h3 align="center">ASIGNACION DE TURNOS</h3>
+    <br />
+    <div align="right">
+        <button type="button" name="create_turno" id="create_turno" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-plus"></span> Crear Nevo
+            Turno</button>
     </div>
-</body>
+    <br />
+    <div class="table-responsive">
+        <table id="turno_table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Farmacia</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha Final</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <br />
+    <br />
+</div>
+<!--</body>
 
-</html>
+</html>-->
 
 <div id="formModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -50,12 +52,31 @@
             </div>
             <div class="modal-body">
                 <span id="form_result"></span>
-                <form method="post" id="tusuario_form" class="form-horizontal">
+                <form method="post" id="turno_form" class="form-horizontal">
+
                     @csrf
                     <div class="form-group">
-                        <label class="control-label col-md-4">Nombre : </label>
+                        <label class="control-label col-md-4">Farmacia : </label>
                         <div class="col-md-8">
-                            <input type="text" name="nombre" id="nombre" class="form-control" />
+                            <select name="idfarmacia" id="idfarmacia" class="form-control">
+                                <option value=""> </option>
+                                @foreach($farmacias as $far)
+                                <option value="{{$far->id}}">{{$far->nomfarmacia}}</option>
+                                @endforeach
+                            </select>
+                            <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Fecha inicio : </label>
+                        <div class="col-md-8">
+                            <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Fecha Fin : </label>
+                        <div class="col-md-8">
+                            <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" />
                         </div>
                     </div>
                     <br />
@@ -66,6 +87,9 @@
                             value="Add" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
+
+
+
                 </form>
             </div>
         </div>
@@ -94,15 +118,23 @@
 <script>
 $(document).ready(function() {
 
-    $('#tusuario_table').DataTable({
+    $('#turno_table').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('tipo_usuarios.index') }}",
+            url: "{{ route('turnos.index') }}",
         },
         columns: [{
-                data: 'nombre',
-                name: 'nombre'
+                data: 'farmacia',
+                name: 'idfarmacia'
+            },
+            {
+                data: 'fecha_inicio',
+                name: 'fecha_inicio'
+            },
+            {
+                data: 'fecha_fin',
+                name: 'fecha_fin'
             },
             {
                 data: 'action',
@@ -112,26 +144,26 @@ $(document).ready(function() {
         ]
     });
 
-    $('#create_tusuario').click(function() {
+    $('#create_turno').click(function() {
         $('.modal-title').text('Add New Record');
         $('#action_button').val('Add');
         $('#action').val('Add');
-       $('#tipo_usuario_form').trigger("reset");
+        $('#turno_form').trigger("reset");
         $('#form_result').html('');
 
         $('#formModal').modal('show');
     });
 
-    $('#tusuario_form').on('submit', function(event) {
+    $('#turno_form').on('submit', function(event) {
         event.preventDefault();
         var action_url = '';
 
         if ($('#action').val() == 'Add') {
-            action_url = "{{ route('tipo_usuarios.store') }}";
+            action_url = "{{ route('turnos.store') }}";
         }
 
         if ($('#action').val() == 'Edit') {
-            action_url = "{{ route('tipo_usuarios.update') }}";
+            action_url = "{{ route('turnos.update') }}";
         }
 
         $.ajax({
@@ -150,8 +182,8 @@ $(document).ready(function() {
                 }
                 if (data.success) {
                     html = '<div class="alert alert-success">' + data.success + '</div>';
-                    $('#tusuario_form')[0].reset();
-                    $('#tusuario_table').DataTable().ajax.reload();
+                    $('#turno_form')[0].reset();
+                    $('#turno_table').DataTable().ajax.reload();
                 }
                 $('#form_result').html(html);
             }
@@ -162,10 +194,12 @@ $(document).ready(function() {
         var id = $(this).attr('id');
         $('#form_result').html('');
         $.ajax({
-            url: "/tipo_usuarios/" + id + "/edit",
+            url: "/turnos/" + id + "/edit",
             dataType: "json",
             success: function(data) {
-                $('#nombre').val(data.result.nombre);
+                $('#idfarmacia').val(data.result.idfarmacia);
+                $('#fecha_inicio').val(data.result.fecha_inicio);
+                $('#fecha_fin').val(data.result.fecha_fin);
                 $('#hidden_id').val(id);
                 $('.modal-title').text('Edit Record');
                 $('#action_button').val('Edit');
@@ -185,13 +219,13 @@ $(document).ready(function() {
 
     $('#ok_button').click(function() {
         $.ajax({
-            url: "tipo_usuarios/destroy/" + user_id,
+            url: "turnos/destroy/" + user_id,
             beforeSend: function() {
                 $('#ok_button').text('Deleting...');
             },
             success: function(data) {
                 $('#confirmModal').modal('hide');
-                $('#tusuario_table').DataTable().ajax.reload();
+                $('#turno_table').DataTable().ajax.reload();
                 setTimeout(function() {
                     // alert('Data Deleted');
                 }, 2000);

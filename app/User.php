@@ -34,6 +34,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->belongsTo('App\Tipos_usuario','rol');
     }
     
+
+    public function verificar($user,$email){
+        foreach($user as $us){
+            if ($us->email==$email){
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * The attributes excluded from the model's JSON form.
      *

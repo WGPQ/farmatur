@@ -80,8 +80,9 @@
                         @endif 
 
             @else
-            <a href="{{ route('login') }}">Iniciar Secion</a>
+            <!--<a href="{{ route('login') }}">Iniciar Secion</a>-->
          
+            <a href="{{ route('login') }}">Iniciar Secion</a>
             @endauth
         </div>
         @endif

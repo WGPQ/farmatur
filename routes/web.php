@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,13 +16,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('/mapa', function () {
-    return view('farmacias.mapa');
-});
-
-Route::get('/animalito', function () {
-    return view('animal.index');
-});
 
 Route::resource('animal','AnimaController');
 
@@ -30,6 +23,11 @@ Route::resource('divpoliticas','DivpoliticaController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::resource('inicio','InicioController');
+
+
 
 
 
@@ -70,3 +68,28 @@ Route::resource('divpoliticas', 'DivPolitcaController');
 Route::post('divpoliticas/update', 'DivPolitcaController@update')->name('divpoliticas.update');
 
 Route::get('divpoliticas/destroy/{id}', 'DivPolitcaController@destroy');
+
+
+
+
+Route::resource('turnos', 'TurnosController');
+
+Route::post('turnos/update', 'TurnosController@update')->name('turnos.update');
+
+Route::get('turnos/destroy/{id}', 'TurnosController@destroy');
+
+
+Route::get('/enviar',function(){
+//return view('');
+$to_name='William Puma';
+$to_email='dwilgeo95@gmail.com';
+$data= array(
+    'name'=> "Hola",
+);
+
+Mail::send('email',$data,function($message) use ($to_name,$to_email){
+    $message->to($to_email)
+    ->subject('lalala');
+});
+});
+
