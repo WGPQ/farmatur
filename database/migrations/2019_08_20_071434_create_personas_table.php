@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
+use App\Persona;
 class CreatePersonasTable extends Migration
 {
     /**
@@ -16,12 +16,20 @@ class CreatePersonasTable extends Migration
         Schema::create('personas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre',100);
+            $table->string('email')->unique();
             $table->string('cedula',15);
             $table->string('telefono',15);
             $table->string('genero',2);
            // $table->string('foto');
             $table->timestamps();
         });
+        $persona = new Persona;
+        $persona->nombre = 'William Puma';
+        $persona->email='farmaturnfar@gmail.com';
+        $persona->cedula='1004096572';
+        $persona->telefono='0997702533';
+        $persona->genero='M';
+        $persona->save();
     }
 
     /**

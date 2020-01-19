@@ -113,7 +113,7 @@ $(document).ready(function() {
     });
 
     $('#create_tusuario').click(function() {
-        $('.modal-title').text('Add New Record');
+        $('.modal-title').text('Agregar nuevo rol');
         $('#action_button').val('Add');
         $('#action').val('Add');
        $('#tipo_usuario_form').trigger("reset");
@@ -167,7 +167,7 @@ $(document).ready(function() {
             success: function(data) {
                 $('#nombre').val(data.result.nombre);
                 $('#hidden_id').val(id);
-                $('.modal-title').text('Edit Record');
+                $('.modal-title').text('Editar rol');
                 $('#action_button').val('Edit');
                 $('#action').val('Edit');
                 $('#formModal').modal('show');

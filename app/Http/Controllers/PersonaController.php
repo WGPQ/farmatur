@@ -19,7 +19,7 @@ class PersonaController extends Controller
           $data = Persona::latest()->get();
           return DataTables::of($data)
                   ->addColumn('action', function($data){
-                    $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"> Editar</button>';
+                    $button = '<button type="button" name="edit" id="'.$data->id.'"class="edit btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"> Editar</button>';
                         $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"> Eliminar</button>';
                         return $button;
                   })
@@ -49,6 +49,7 @@ class PersonaController extends Controller
     {
       $rules = array(
         'nombre'    =>  'required',
+        'email'     =>  'required',
         'cedula'     =>  'required',
         'telefono'     =>  'required',
         'genero'     =>  'required'
@@ -65,6 +66,7 @@ class PersonaController extends Controller
 
     $form_data = array(
         'nombre'        =>  $request->nombre,
+        'email'         =>  $request->email,
         'cedula'         =>  $request->cedula,
         'telefono'     =>  $request->telefono,
         'genero'     =>  $request->genero
@@ -112,6 +114,7 @@ class PersonaController extends Controller
     {
       $rules = array(
         'nombre'    =>  'required',
+        'email'     =>  'required',
         'cedula'     =>  'required',
         'telefono'     =>  'required',
         'genero'     =>  'required'
@@ -126,6 +129,7 @@ class PersonaController extends Controller
 
     $form_data = array(
       'nombre'        =>  $request->nombre,
+      'email'         =>  $request->email,
       'cedula'         =>  $request->cedula,
       'telefono'     =>  $request->telefono,
       'genero'     =>  $request->genero
@@ -146,5 +150,6 @@ class PersonaController extends Controller
     {
       $data = Persona::findOrFail($id);
         $data->delete();
+      
     }
 }

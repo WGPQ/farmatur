@@ -182,7 +182,24 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        $data = User::findOrFail($id);
-        $data->delete();
+        try{
+            $data = User::findOrFail($id);
+            $data->delete();
+        }
+        catch(\Illuminate\Database\QueryException $e){
+            //return response()->json(['errors' => $e->errors()->all()]);
+            return with('success','Blog delete successfully.');
+
+        }
     }
+
+    public function usuario_email($id)
+    {
+          if(request()->ajax())
+        {
+            $data = Persona::findOrFail($id);
+            return response()->json(['result' => $data]);
+        }
+    }
+
 }

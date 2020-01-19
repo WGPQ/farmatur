@@ -86,7 +86,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4">Nombre Farmacia : </label>
                                     <div class="col-md-8">
-                                        <input type="text" name="nomfarmacia" id="nomfarmacia" class="form-control" />
+                                        <input type="text" style="text-transform:uppercase" name="nomfarmacia" id="nomfarmacia" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -110,7 +110,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4">Direccion : </label>
                                     <div class="col-md-8">
-                                        <input type="text" name="direccion" id="direccion" class="form-control" />
+                                        <input type="text"style="text-transform:uppercase" name="direccion" id="direccion" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -134,10 +134,11 @@
 
                             </div>
                             <div class=" col-sm-4">
-                                <label class="control-label col-md-8">ZONA DE ANALISIS</label>
-                                <!--<div id="map">
-                                </div>-->
-
+                                <label class="control-label col-md-8">ZONA DE ANALISIS2</label>
+                                @include('farmacias.mapa')                               
+                               <!-- <div id="map">
+                                </div>
+                                <script src="js/usuario_mapaCode.js"></script>-->
                             </div>
                         </div>
                         <br />
@@ -227,7 +228,7 @@ $(document).ready(function() {
     });
 
     $('#create_farmacia').click(function() {
-        $('.modal-title').text('Add New Record');
+        $('.modal-title').text('Agregar nueva farmacia');
         $('#action_button').val('Add');
         $('#action').val('Add');
         $('#form_result').html('');
@@ -286,7 +287,7 @@ $(document).ready(function() {
                 $('#longitud').val(data.result.longitud);
                 $('#jerarquia').val(data.result.jerarquia);
                 $('#hidden_id').val(id);
-                $('.modal-title').text('Edit Record');
+                $('.modal-title').text('Editar farmacia');
                 $('#action_button').val('Edit');
                 $('#action').val('Edit');
                 $('#formModal').modal('show');

@@ -145,7 +145,7 @@ $(document).ready(function() {
     });
 
     $('#create_turno').click(function() {
-        $('.modal-title').text('Add New Record');
+        $('.modal-title').text('Agregar nuevo turno');
         $('#action_button').val('Add');
         $('#action').val('Add');
         $('#turno_form').trigger("reset");
@@ -201,7 +201,7 @@ $(document).ready(function() {
                 $('#fecha_inicio').val(data.result.fecha_inicio);
                 $('#fecha_fin').val(data.result.fecha_fin);
                 $('#hidden_id').val(id);
-                $('.modal-title').text('Edit Record');
+                $('.modal-title').text('Editar turno');
                 $('#action_button').val('Edit');
                 $('#action').val('Edit');
                 $('#formModal').modal('show');

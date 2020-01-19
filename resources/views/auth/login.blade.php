@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <title>INICIO DE SECION</title>
+    <title>Inicio de secion Farmaturn</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+    <link rel="icon" type="image/png" href="images/icons/farma.ico" />
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
@@ -20,6 +20,7 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!--===============================================================================================-->
 </head>
 
@@ -38,65 +39,49 @@
                         INICIO DE SESION
                     </span>
 
+
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <input class="input100" type="text" name="email" placeholder="Correo">
+                        <input class="input100" type="text" id="email" name="email" placeholder="Correo" required>
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-envelope" aria-hidden="true"></i>
                         </span>
-                        @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input class="input100" type="password" name="password" placeholder="Contraseña">
-
+                        <input class="input100" type="password" id="password" name="password" placeholder="Contraseña"
+                            required>
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
-
-                        @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
                     </div>
-                    
-                    <div class="text-center p-t-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                {{ old('remember') ? 'checked' : '' }}>
 
-                            <label class="txt2" for="remember">
-                                {{ __('Recordar mi contraseña') }}
-                            </label>
-                        </div>
-                    </div>
 
                     <div class="container-login100-form-btn">
-                        <button class="login100-form-btn">
-                            INGRESAR AL SISTEMA
+                        <button type="submit" class="login100-form-btn">
+                        {{ __('INGRESO AL SISTEMA') }}
                         </button>
                     </div>
 
                     <div class="text-center p-t-12">
-                        @if (Route::has('password.request'))
                         <a class="txt2" href="{{ route('password.request') }}">
-                            {{ __('Olvidaste tu Comtraseña?') }}
+                            {{ __('Olvidaste tu contraseña?') }}
                         </a>
-                        @endif
                     </div>
                 </form>
+                <div class="copyrights">
+                    <div class="container">
+                        <div class="footer-distributed">
+                            <div class="footer-left">
+                                <p class="footer-company-name">FarmaTurn. &copy; 2019</p>
+                            </div>
+                        </div>
+                    </div><!-- end container -->
+                </div><!-- end copyrights -->
             </div>
         </div>
     </div>
-
-
-
 
     <!--===============================================================================================-->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>

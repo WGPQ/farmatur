@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use App\Persona;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -33,7 +33,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function tipos_usuario(){
         return $this->belongsTo('App\Tipos_usuario','rol');
     }
-    
+        
 
     public function verificar($user,$email){
         foreach($user as $us){

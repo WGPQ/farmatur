@@ -145,7 +145,7 @@ $(document).ready(function() {
     });
 
     $('#create_divisionp').click(function() {
-        $('.modal-title').text('Add New Record');
+        $('.modal-title').text('Agregar nueva ciudad');
         $('#action_button').val('Add');
         $('#action').val('Add');
         $('#divisionp_form').trigger("reset");
@@ -201,7 +201,7 @@ $(document).ready(function() {
                 $('#nomdivision').val(data.result.nomdivision);
                 $('#nivel').val(data.result.nivel);
                 $('#hidden_id').val(id);
-                $('.modal-title').text('Edit Record');
+                $('.modal-title').text('Editar ciudad');
                 $('#action_button').val('Edit');
                 $('#action').val('Edit');
                 $('#formModal').modal('show');

@@ -15,31 +15,33 @@
 @extends('layouts.app2')
 
 @section('content')
-    <div class="container">
-        <br />
-        <h3 align="center">REGISTRO DE PERSONAS</h3>
-        <br />
-        <div align="right">
-            <button type="button" name="create_persona" id="create_persona" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-plus"></span> Crear Nueva
-                Persona</button>
-        </div>
-        <br />
-        <div class="table-responsive">
-            <table id="persona_table" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Cedula</th>
-                        <th>Telefono</th>
-                        <th>Genero</th>
-                        <th>Accion</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <br />
-        <br />
+<div class="container">
+    <br />
+    <h3 align="center">REGISTRO DE PERSONAS</h3>
+    <br />
+    <div align="right">
+        <button type="button" name="create_persona" id="create_persona" class="btn btn-success btn-sm"> <span
+                class="glyphicon glyphicon-plus"></span> Crear Nueva
+            Persona</button>
     </div>
+    <br />
+    <div class="table-responsive">
+        <table id="persona_table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Cedula</th>
+                    <th>Telefono</th>
+                    <th>Genero</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <br />
+    <br />
+</div>
 <!--</body>
 
 </html>-->
@@ -61,6 +63,14 @@
                             <input type="text" name="nombre" id="nombre" class="form-control" />
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Correo : </label>
+                        <div class="col-md-8">
+                            <input type="email" name="email" id="email" class="form-control" />
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="control-label col-md-4">Cedula : </label>
                         <div class="col-md-8">
@@ -70,13 +80,13 @@
                     <div class="form-group">
                         <label class="control-label col-md-4">Telefono : </label>
                         <div class="col-md-8">
-                            <input type="text" name="telefono" id="telefono" class="form-control" />
+                            <input type="tel" name="telefono" id="telefono" class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-4">Genero : </label>
                         <div class="col-md-8">
-                            <select name="genero" id="genero" class="form-control" >
+                            <select name="genero" id="genero" class="form-control">
 
                                 <option value="M">Masculino</option>
 
@@ -85,7 +95,7 @@
                                 <option value="O">Otro</option>
 
                             </select>
-                           <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
+                            <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
                         </div>
                     </div>
                     <br />
@@ -93,7 +103,7 @@
                         <input type="hidden" name="action" id="action" value="Add" />
                         <input type="hidden" name="hidden_id" id="hidden_id" />
                         <button type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                            value="Add" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
+                            value="Add"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
@@ -109,13 +119,20 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h2 class="modal-title">Confirmation</h2>
             </div>
+            @if($errors->any())
+            <p>Hola</p>
+            @endif
+            <form action="">
             <div class="modal-body">
-                <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+                <h4 align="center" style="margin:0;">Dese eliminar
+                    <span class="title"></span>
+                    ?</h4>
             </div>
             <div class="modal-footer">
                 <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">OK</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -133,6 +150,10 @@ $(document).ready(function() {
         columns: [{
                 data: 'nombre',
                 name: 'nombre'
+            },
+            {
+                data: 'email',
+                name: 'email'
             },
             {
                 data: 'cedula',
@@ -155,10 +176,10 @@ $(document).ready(function() {
     });
 
     $('#create_persona').click(function() {
-        $('.modal-title').text('Add New Record');
+        $('.modal-title').text('Agregar nueva persona');
         $('#action_button').val('Add');
         $('#action').val('Add');
-       $('#persona_form').trigger("reset");
+        $('#persona_form').trigger("reset");
         $('#form_result').html('');
 
         $('#formModal').modal('show');
@@ -208,11 +229,12 @@ $(document).ready(function() {
             dataType: "json",
             success: function(data) {
                 $('#nombre').val(data.result.nombre);
+                $('#email').val(data.result.email);
                 $('#cedula').val(data.result.cedula);
                 $('#telefono').val(data.result.telefono);
                 $('#genero').val(data.result.genero);
                 $('#hidden_id').val(id);
-                $('.modal-title').text('Edit Record');
+                $('.modal-title').text('Editar persona');
                 $('#action_button').val('Edit');
                 $('#action').val('Edit');
                 $('#formModal').modal('show');
@@ -221,9 +243,11 @@ $(document).ready(function() {
     });
 
     var user_id;
-
+    var username;
     $(document).on('click', '.delete', function() {
         user_id = $(this).attr('id');
+        username = $(this).attr('nombre');
+        $('.title').text(username);
         $('#ok_button').text('OK');
         $('#confirmModal').modal('show');
     });
@@ -235,6 +259,7 @@ $(document).ready(function() {
                 $('#ok_button').text('Deleting...');
             },
             success: function(data) {
+                
                 $('#confirmModal').modal('hide');
                 $('#persona_table').DataTable().ajax.reload();
                 setTimeout(function() {

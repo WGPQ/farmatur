@@ -15,31 +15,32 @@
 @extends('layouts.app2')
 
 @section('content')
-    <div class="container">
-        <br />
-        <h3 align="center">REGISTRO DE USUARIOS</h3>
-        <br />
-        <div align="right">
-            <button type="button" name="create_usuario" id="create_usuario" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Crear Nuevo
-                Usuaro</button>
-        </div>
-        <br />
-        <div class="table-responsive">
-            <table id="usuario_table" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Rol</th>
-                        <th>Activo</th>
-                        <th>Accion</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <br />
-        <br />
+<div class="container">
+    <br />
+    <h3 align="center">REGISTRO DE USUARIOS</h3>
+    <br />
+    <div align="right">
+        <button type="button" name="create_usuario" id="create_usuario" class="btn btn-success btn-sm"><span
+                class="glyphicon glyphicon-plus"></span> Crear Nuevo
+            Usuaro</button>
     </div>
+    <br />
+    <div class="table-responsive">
+        <table id="usuario_table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Activo</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <br />
+    <br />
+</div>
 </body>
 
 </html>
@@ -69,7 +70,8 @@
                     <div class="form-group">
                         <label class="control-label col-md-4">Correo : </label>
                         <div class="col-md-8">
-                            <input type="email" name="email" id="email" class="form-control" />
+                            <input type="email" name="email" id="email" class="form-control" readonly />
+
                         </div>
                     </div>
 
@@ -83,7 +85,6 @@
                             </select>
                         </div>
                     </div>
-
 
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
@@ -102,7 +103,7 @@
                         <input type="hidden" name="action" id="action" value="Add" />
                         <input type="hidden" name="hidden_id" id="hidden_id" />
                         <button type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                            value="Add" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
+                            value="Add"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
@@ -163,7 +164,7 @@ $(document).ready(function() {
     });
 
     $('#create_usuario').click(function() {
-        $('.modal-title').text('Add New Record');
+        $('.modal-title').text('Agregar nuevo usuario');
         $('#action_button').val('Add');
         $('#action').val('Add');
         $('#usuario_form').trigger("reset");
@@ -222,7 +223,7 @@ $(document).ready(function() {
                 $('#rol').val(data.result.rol);
                 $('#activo').val(data.result.activo);
                 $('#hidden_id').val(id);
-                $('.modal-title').text('Edit Record');
+                $('.modal-title').text('Editar usuario');
                 $('#action_button').val('Edit');
                 $('#action').val('Edit');
                 $('#formModal').modal('show');
@@ -253,6 +254,18 @@ $(document).ready(function() {
             }
         })
     });
+
+
+
+    $('#idpersona').on('change', function(e) {
+        //console.log(e);
+        var u_email = e.target.value;
+        //ajax
+        $.get("usuarios/usuario_email/" + u_email, function(data) {
+            $('#email').val(data.result.email);
+        });
+    });
+
 
 });
 </script>

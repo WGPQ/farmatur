@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\User;
 class CreateUsersTable extends Migration
 {
     /**
@@ -26,6 +26,14 @@ class CreateUsersTable extends Migration
             $table->foreign('idpersona')->references('id')->on('personas');
             $table->foreign('rol')->references('id')->on('tipos_usuarios');
         });
+
+        $user = new User;
+        $user->idpersona=1;
+        $user->email = 'farmaturnfar@gmail.com';
+        $user->password = Hash::make('farmaturn');
+        $user->rol=1;
+        $user->activo=1;
+        $user->save();
     }
 
     /**

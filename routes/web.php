@@ -16,18 +16,16 @@ Route::get('/', function () {
 });
 
 
+Route::get('/mapa', function () {
+    return view('farmacias.hola');
+});
 
-Route::resource('animal','AnimaController');
-
-Route::resource('divpoliticas','DivpoliticaController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::resource('inicio','InicioController');
-
-
 
 
 
@@ -61,6 +59,7 @@ Route::post('usuarios/update', 'UsuarioController@update')->name('usuarios.updat
 
 Route::get('usuarios/destroy/{id}', 'UsuarioController@destroy');
 
+Route::get('usuarios/usuario_email/{id}', 'UsuarioController@usuario_email');
 
 
 Route::resource('divpoliticas', 'DivPolitcaController');

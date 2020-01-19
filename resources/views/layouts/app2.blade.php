@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/mystyle.css">
-    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
-
+   
 </head>
 
 <body>

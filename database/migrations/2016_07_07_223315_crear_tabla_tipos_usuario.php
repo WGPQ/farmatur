@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
+use App\Tipos_usuario;
 class CrearTablaTiposUsuario extends Migration
 {
     /**
@@ -18,6 +18,10 @@ class CrearTablaTiposUsuario extends Migration
             $table->timestamps();
            
         });
+
+        $tuser = new Tipos_usuario;
+        $tuser->nombre = 'Super Administrador';
+        $tuser->save();
     }
 
     /**
