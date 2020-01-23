@@ -71,11 +71,11 @@
         @if (Route::has('login'))
         <div class="top-right links">
             @auth
-                        @if(Auth::user()->tipouser == 1)
+                        @if(Auth::user()->rol == 1)
                         <a href="{{ url('/home') }}">Super Administrador</a>
                         @endif
 
-                        @if(Auth::user()->tipouser == 2)
+                        @if(Auth::user()->rol == 2)
                         <a href="{{ url('/home') }}">Administrador</a>
                         @endif 
 
@@ -89,7 +89,7 @@
 
         <div class="content">
             <div class="title m-b-md">
-                BIENVENIDOS
+                BIENVENIDOS2
                 <h6>FARMATURN Sistema de Geolocalizacion de Farmacias de Turno</h6>
             </div>
 

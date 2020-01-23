@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 
 Route::get('/mapa', function () {
-    return view('farmacias.hola');
+    return view('farmacias.mapa');
 });
 
 Auth::routes();
@@ -92,3 +92,6 @@ Mail::send('email',$data,function($message) use ($to_name,$to_email){
 });
 });
 
+
+Route::resource('perfil', 'PerfilController');
+Route::post('perfil/update', 'PerfilController@update')->name('perfil.update');

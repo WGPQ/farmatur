@@ -29,6 +29,7 @@
         <table id="persona_table" class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>Foto</th>
                     <th>Nombre</th>
                     <th>Correo</th>
                     <th>Cedula</th>
@@ -55,8 +56,15 @@
             </div>
             <div class="modal-body">
                 <span id="form_result"></span>
-                <form method="post" id="persona_form" class="form-horizontal">
+                <form method="post" id="persona_form" class="form-horizontal" enctype="multipart/form-data">
                     @csrf
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Select Profile Image : </label>
+                        <div class="col-md-8">
+                            <input type="file" name="image" id="image" />
+                            <span id="store_image"></span>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-md-4">Nombre : </label>
                         <div class="col-md-8">
@@ -119,10 +127,6 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h2 class="modal-title">Confirmation</h2>
             </div>
-            @if($errors->any())
-            <p>Hola</p>
-            @endif
-            <form action="">
             <div class="modal-body">
                 <h4 align="center" style="margin:0;">Dese eliminar
                     <span class="title"></span>
@@ -132,7 +136,6 @@
                 <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">OK</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
-            </form>
         </div>
     </div>
 </div>
@@ -148,6 +151,15 @@ $(document).ready(function() {
             url: "{{ route('personas.index') }}",
         },
         columns: [{
+                data: 'image',
+                name: 'image',
+                render: function(data, type, full, meta) {
+                    return "<img src={{ URL::to('/') }}/images/" + data +
+                        " width='70' class='img-thumbnail' />";
+                },
+                orderable: false
+            },
+            {
                 data: 'nombre',
                 name: 'nombre'
             },
@@ -181,7 +193,6 @@ $(document).ready(function() {
         $('#action').val('Add');
         $('#persona_form').trigger("reset");
         $('#form_result').html('');
-
         $('#formModal').modal('show');
     });
 
@@ -200,7 +211,11 @@ $(document).ready(function() {
         $.ajax({
             url: action_url,
             method: "POST",
-            data: $(this).serialize(),
+            //data: $(this).serialize(),
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
             dataType: "json",
             success: function(data) {
                 var html = '';
@@ -228,8 +243,9 @@ $(document).ready(function() {
             url: "/personas/" + id + "/edit",
             dataType: "json",
             success: function(data) {
-                $('#nombre').val(data.result.nombre);
-                $('#email').val(data.result.email);
+                $('#store_image').html("<img src={{ URL::to('/') }}/images/" +data.result.image + " width='70' class='img-thumbnail' />");                $('#nombre').val(data.result.nombre);
+                $('#store_image').append("<input type='hidden' name='hidden_image' value='"+data.result.image+"' />");
+               $('#email').val(data.result.email);
                 $('#cedula').val(data.result.cedula);
                 $('#telefono').val(data.result.telefono);
                 $('#genero').val(data.result.genero);
@@ -259,7 +275,7 @@ $(document).ready(function() {
                 $('#ok_button').text('Deleting...');
             },
             success: function(data) {
-                
+
                 $('#confirmModal').modal('hide');
                 $('#persona_table').DataTable().ajax.reload();
                 setTimeout(function() {

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Persona extends Model
 {
-    protected $fillable = [
-        'nombre','email', 'cedula', 'telefono','genero'
-       ];
+    protected $fillable = ['image', 'nombre','email', 'cedula', 'telefono','genero'];
+    
 }

@@ -55,7 +55,7 @@
                     {{ Auth::user()->persona['nombre'] }} <b class="caret"></b> <span class="glyphicon glyphicon-user">
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-user"> Perfil</a></li>
+                        <li><a href="/perfil"><span class="glyphicon glyphicon-user"> Perfil</a></li>
                         <li><a href="#">Acción #2</a></li>
                         <li><a href="#">Acción #3</a></li>
                         <li class="divider"></li>

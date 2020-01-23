@@ -143,12 +143,12 @@ class UsuarioController extends Controller
      * @param  \App\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Usuario $usuario)
+    public function update(Request $request)
     {
         $rules = array(
             'idpersona'    =>  'required',
             'email'     =>  'required',
-            'password'     =>  'required',
+//            'password'     =>  'required',
             'rol'     =>  'required',
             'activo'     =>  'required'
         );
@@ -164,7 +164,7 @@ class UsuarioController extends Controller
         $form_data = array(
             'idpersona'        =>  $request->idpersona,
             'email'         =>  $request->email,
-            'password'     =>  Hash::make($request->password),
+  //          'password'     =>  Hash::make($request->password),
             'rol'     =>  $request->rol,
             'activo'     =>  $request->activo
         );

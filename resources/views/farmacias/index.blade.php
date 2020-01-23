@@ -35,6 +35,16 @@
 </head>
 <body>-->
 @extends('layouts.app2')
+<style>
+#map {
+    height: 350px;
+    width: 270px;
+    left: 0px;
+    border: 1px solid #AAA;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+<script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>
 
 @section('content')
 <div class="container">
@@ -42,7 +52,8 @@
     <h3 align="center">REGISTRO DE FARMACIAS</h3>
     <br />
     <div align="right">
-        <button type="button" name="create_farmacia" id="create_farmacia" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Crear Nueva
+        <button type="button" name="create_farmacia" id="create_farmacia" class="btn btn-success btn-sm"><span
+                class="glyphicon glyphicon-plus"></span> Crear Nueva
             Farmacia</button>
     </div>
     <br />
@@ -86,7 +97,8 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4">Nombre Farmacia : </label>
                                     <div class="col-md-8">
-                                        <input type="text" style="text-transform:uppercase" name="nomfarmacia" id="nomfarmacia" class="form-control" />
+                                        <input type="text" style="text-transform:uppercase" name="nomfarmacia"
+                                            id="nomfarmacia" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -100,7 +112,7 @@
                                         <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="control-label col-md-4">Telefono : </label>
                                     <div class="col-md-8">
@@ -110,7 +122,8 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4">Direccion : </label>
                                     <div class="col-md-8">
-                                        <input type="text"style="text-transform:uppercase" name="direccion" id="direccion" class="form-control" />
+                                        <input type="text" style="text-transform:uppercase" name="direccion"
+                                            id="direccion" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -135,10 +148,8 @@
                             </div>
                             <div class=" col-sm-4">
                                 <label class="control-label col-md-8">ZONA DE ANALISIS2</label>
-                                @include('farmacias.mapa')                               
-                               <!-- <div id="map">
-                                </div>
-                                <script src="js/usuario_mapaCode.js"></script>-->
+                                <div id="map"></div>
+                                <script type='text/javascript' src='js/leaf-demo.js'></script>
                             </div>
                         </div>
                         <br />
@@ -146,9 +157,9 @@
                             <input type="hidden" name="action" id="action" value="Add" />
                             <input type="hidden" name="hidden_id" id="hidden_id" />
                             <button type="submit" name="action_button" id="action_button" class="btn btn-warning"
-                            value="Add" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    </div>
+                                value="Add"><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </div>
 
                     </form>
 
@@ -190,8 +201,7 @@ $(document).ready(function() {
         ajax: {
             url: "{{ route('farmacias.index') }}",
         },
-        columns: [
-            {
+        columns: [{
                 data: 'nomfarmacia',
                 name: 'nomfarmacia'
             },

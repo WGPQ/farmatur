@@ -47,7 +47,9 @@ class PersonaController extends Controller
      */
     public function store(Request $request)
     {
+
       $rules = array(
+        'image'         =>  'required|image|max:2048',
         'nombre'    =>  'required',
         'email'     =>  'required',
         'cedula'     =>  'required',
@@ -63,8 +65,13 @@ class PersonaController extends Controller
     {
         return response()->json(['errors' => $error->errors()->all()]);
     }
+   
+    $image = $request->file('image');
+    $new_name = rand() . '.' . $image->getClientOriginalExtension();
+    $image->move(public_path('images'), $new_name);
 
     $form_data = array(
+      'image'        =>  $new_name,
         'nombre'        =>  $request->nombre,
         'email'         =>  $request->email,
         'cedula'         =>  $request->cedula,
@@ -112,7 +119,12 @@ class PersonaController extends Controller
      */
     public function update(Request $request)
     {
+      $image_name = $request->hidden_image;
+        $image = $request->file('image');
+        if($image != '')
+        {
       $rules = array(
+        'image'         =>  'required|image|max:2048',
         'nombre'    =>  'required',
         'email'     =>  'required',
         'cedula'     =>  'required',
@@ -126,8 +138,27 @@ class PersonaController extends Controller
     {
         return response()->json(['errors' => $error->errors()->all()]);
     }
+    $image_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $image_name);
+  }else{
+    $rules = array(
+      'nombre'    =>  'required',
+      'email'     =>  'required',
+      'cedula'     =>  'required',
+      'telefono'     =>  'required',
+      'genero'     =>  'required'
+  );
+
+  $error = Validator::make($request->all(), $rules);
+
+  if($error->fails())
+  {
+      return response()->json(['errors' => $error->errors()->all()]);
+  }
+  }
 
     $form_data = array(
+      'image'            =>   $image_name,
       'nombre'        =>  $request->nombre,
       'email'         =>  $request->email,
       'cedula'         =>  $request->cedula,
