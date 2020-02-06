@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
-
+});*/
+Route::get('/', 'FarmaciaMapControler@index');
 
 Route::get('/mapa', function () {
-    return view('farmacias.mapa');
+    return view('farmacias.map');
 });
 
 Auth::routes();

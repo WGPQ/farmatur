@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+Route::group(['as' => 'api.', 'namespace' => 'Api'], function () {
+    /*
+     * Outlets Endpoints
+     */
+    Route::get('farmacia', 'FarmaciaControler@index')->name('farmacia.index');
+    Route::get('outlets', 'OutletController@index')->name('outlets.index');
+});

@@ -31,8 +31,8 @@ class FarmaciaController extends Controller
                 return $data->Ciudad['nomdivision'];
             })
                     ->addColumn('action', function($data){
-                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"> Editar</button>';
-                        $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"> Eliminar</button>';
+                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></button>';
+                        $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></button>';
                         return $button;
                     })
                     ->rawColumns(['action'])
@@ -81,8 +81,8 @@ class FarmaciaController extends Controller
             'nomfarmacia'     =>  $request->nomfarmacia,
             'telefono'     =>  $request->telefono,
             'direccion'     =>  $request->direccion,
-            'longitud'     =>  $request->longitud,
-            'latitud'     =>  $request->latitud,
+            'longitude'     =>  $request->longitud,
+            'latitude'     =>  $request->latitud,
             'jerarquia'     =>  $request->jerarquia
         );
 
@@ -149,8 +149,8 @@ class FarmaciaController extends Controller
             'nomfarmacia'     =>  $request->nomfarmacia,
             'telefono'     =>  $request->telefono,
             'direccion'     =>  $request->direccion,
-            'longitud'     =>  $request->longitud,
-            'latitud'     =>  $request->latitud,
+            'longitude'     =>  $request->longitud,
+            'latitude'     =>  $request->latitud,
             'jerarquia'     =>  $request->jerarquia
         );
 

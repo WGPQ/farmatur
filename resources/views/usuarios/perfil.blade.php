@@ -28,13 +28,13 @@
                 <div class="profile-sidebar">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="/images/{{Auth::user()->persona['image']}}" class="img-responsive" alt="">
+                        <img src="/images/{{Auth::user()->image}}" class="img-responsive" alt="">
                     </div>
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
                     <div class="profile-usertitle">
                         <div class="profile-usertitle-name">
-                            <h2> {{Auth::user()->persona['nombre']}}</h2>
+                            <h2> {{Auth::user()->nombre}}</h2>
                         </div>
                         <div class="profile-usertitle-job">
                             <h3> {{Auth::user()->tipos_usuario['nombre']}}</h3>
@@ -44,8 +44,9 @@
                     <!-- END SIDEBAR USER TITLE -->
                     <!-- SIDEBAR BUTTONS -->
                     <div class="profile-userbuttons">
-                        <button type="button" name="edit" id="{{Auth::user()->persona['id']}}" class="edit btn btn-primary btn-sm"><span
-                                class="glyphicon glyphicon-edit"></span> Editar</button>
+                        <button type="button" name="edit" id="{{Auth::user()->id}}"
+                            class="edit btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></span>
+                            Editar</button>
                     </div>
                     <!-- END SIDEBAR BUTTONS -->
                     <!-- SIDEBAR MENU -->
@@ -54,17 +55,17 @@
                             <li class="active">
                                 <a href="#">
                                     <i class="glyphicon glyphicon-earphone"></i>
-                                    {{Auth::user()->persona['telefono']}} </a>
+                                    {{Auth::user()->telefono}} </a>
                             </li>
                             <li>
                                 <a href="#">
                                     <i class="glyphicon glyphicon-envelope"></i>
-                                    {{Auth::user()->persona['email']}} </a>
+                                    {{Auth::user()->email}} </a>
                             </li>
                             <li>
                                 <a href="#" target="_blank">
-                                    <i class="glyphicon glyphicon-ok"></i>
-                                    {{Auth::user()->persona['cedula']}}</a>
+
+                                    {{Auth::user()->cedula}}</a>
                             </li>
                             <li>
                                 <a href="#">
@@ -162,56 +163,62 @@
 
 
     <script>
-$(document).ready(function() {
-    $('#usuario_form').on('submit', function(event) {
-        event.preventDefault();
-        $.ajax({
-            url: "{{ route('perfil.update') }}",
-            method: "POST",
-            data: $(this).serialize(),
-            dataType: "json",
-            success: function(data) {
-                var html = '';
-                if (data.errors) {
-                    html = '<div class="alert alert-danger">';
-                    for (var count = 0; count < data.errors.length; count++) {
-                        html += '<p>' + data.errors[count] + '</p>';
+    $(document).ready(function() {
+        $('#usuario_form').on('submit', function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "{{ route('perfil.update') }}",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function(data) {
+                    var html = '';
+                    if (data.errors) {
+                        html = '<div class="alert alert-danger">';
+                        for (var count = 0; count < data.errors.length; count++) {
+                            html += '<p>' + data.errors[count] + '</p>';
+                        }
+                        html += '</div>';
                     }
-                    html += '</div>';
+                    if (data.success) {
+                        html = '<div class="alert alert-success">' + data.success +
+                        '</div>';
+                        $('#usuario_form')[0].reset();
+                    }
+                    $('#form_result').html(html);
                 }
-                if (data.success) {
-                    html = '<div class="alert alert-success">' + data.success + '</div>';
-                    $('#usuario_form')[0].reset();
-                }
-                $('#form_result').html(html);
-            }
+            });
         });
-    });
 
-    $(document).on('click', '.edit', function() {
-        var id = $(this).attr('id');
-        $('#form_result').html('');
-        $.ajax({
-            url: "/perfil/" + id + "/edit",
-            dataType: "json",
-            success: function(data) {
-               	$('#store_image').html("<img src={{ URL::to('/') }}/images/" +"{{Auth::user()->persona['image']}}" + " width='70' class='img-thumbnail' />");                $('#nombre').val(data.result.nombre);
-                 $('#store_image').append("<input type='hidden' name='hidden_image' value='"+"{{Auth::user()->persona['image']}}"+"' />");
-			    $('#email').val("{{Auth::user()->persona['email']}}");
-                $('#cedula').val("{{Auth::user()->persona['cedula']}}");
-                $('#telefono').val("{{Auth::user()->persona['telefono']}}");
-                $('#genero').val("{{Auth::user()->persona['genero']}}");
-                $('#hidden_id').val(id);
-                $('.modal-title').text('Editar usuario');
-                $('#action_button').val('Edit');
-                $('#action').val('Edit');
-                $('#formModal').modal('show');
-            }
-        })
+        $(document).on('click', '.edit', function() {
+            var id = $(this).attr('id');
+            $('#form_result').html('');
+            $.ajax({
+                url: "/perfil/" + id + "/edit",
+                dataType: "json",
+                success: function(data) {
+                    $('#store_image').html("<img src={{ URL::to('/') }}/images/" +
+                        "{{Auth::user()->image}}" +
+                        " width='70' class='img-thumbnail' />");
+                    $('#nombre').val(data.result.nombre);
+                    $('#store_image').append(
+                        "<input type='hidden' name='hidden_image' value='" +
+                        "{{Auth::user()->image}}" + "' />");
+                    $('#email').val("{{Auth::user()->email}}");
+                    $('#cedula').val("{{Auth::user()->cedula}}");
+                    $('#telefono').val("{{Auth::user()->telefono}}");
+                    $('#genero').val("{{Auth::user()->genero}}");
+                    $('#hidden_id').val(id);
+                    $('.modal-title').text('Editar usuario');
+                    $('#action_button').val('Edit');
+                    $('#action').val('Edit');
+                    $('#formModal').modal('show');
+                }
+            })
+        });
+
     });
-    
-});
-</script>
+    </script>
 
 </body>
 

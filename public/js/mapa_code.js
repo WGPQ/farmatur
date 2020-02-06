@@ -1,4 +1,6 @@
-(function () {
+(function() {
+
+
     var map = L.map('map').setView([0.04104004628590023, -78.14285258539633], 13);
 
     L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=9GsAOSMtwAdzSXgPwujl', {
@@ -23,7 +25,7 @@
 
 
     // manejo del combobox
-    var cbn_selector = document.getElementById("cbx_parroquias");
+    var cbn_selector = document.getElementById("id_division");
 
     function centrarMapaParroquia() {
         var posicion = cbn_selector.selectedIndex;

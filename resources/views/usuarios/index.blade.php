@@ -1,18 +1,4 @@
-<!--<html>
-
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>How to Delete or Remove Data From Mysql in Laravel 6 using Ajax</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-</head>
-
-<body>-->
-@extends('layouts.app2')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -29,8 +15,12 @@
         <table id="usuario_table" class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>Foto</th>
                     <th>Nombre</th>
                     <th>Correo</th>
+                    <th>Cedula</th>
+                    <th>Telefono</th>
+                    <th>Genero</th>
                     <th>Rol</th>
                     <th>Activo</th>
                     <th>Accion</th>
@@ -41,9 +31,6 @@
     <br />
     <br />
 </div>
-</body>
-
-</html>
 
 <div id="formModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -54,24 +41,54 @@
             </div>
             <div class="modal-body">
                 <span id="form_result"></span>
-                <form method="post" id="usuario_form" class="form-horizontal">
+                <form method="post" id="usuario_form" class="form-horizontal" enctype="multipart/form-data">
                     @csrf
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Seleccione su foto: </label>
+                        <div class="col-md-8">
+                            <input type="file" name="image" id="image" />
+                            <span id="store_image"></span>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-md-4">Nombre : </label>
                         <div class="col-md-8">
-                            <select name="idpersona" id="idpersona" class="form-control">
-                                @foreach($personas as $per)
-                                <option value="{{$per->id}}">{{$per->nombre}}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" name="nombre" id="nombre" class="form-control" />
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-4">Correo : </label>
                         <div class="col-md-8">
-                            <input type="email" name="email" id="email" class="form-control" readonly />
+                            <input type="email" name="email" id="email" class="form-control" />
+                        </div>
+                    </div>
 
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Cedula : </label>
+                        <div class="col-md-8">
+                            <input type="text" name="cedula" id="cedula" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Telefono : </label>
+                        <div class="col-md-8">
+                            <input type="tel" name="telefono" id="telefono" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Genero : </label>
+                        <div class="col-md-8">
+                            <select name="genero" id="genero" class="form-control">
+
+                                <option value="M">Masculino</option>
+
+                                <option value="F">Femenino</option>
+
+                                <option value="O">Otro</option>
+
+                            </select>
+                            <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
                         </div>
                     </div>
 
@@ -83,18 +100,6 @@
                                 <option value="{{$tusuario->id}}">{{$tusuario->nombre}}</option>
                                 @endforeach
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-6 col-md-offset-4">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="activo" id="activo"
-                                        {{ old('remember') ? 'checked' : '' }}>
-                                    Activo
-                                </label>
-                            </div>
                         </div>
                     </div>
 
@@ -120,10 +125,12 @@
                 <h2 class="modal-title">Confirmation</h2>
             </div>
             <div class="modal-body">
-                <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+                <h4 class="mensaje" align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
             </div>
             <div class="modal-footer">
-                <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">OK</button>
+                <input type="hidden" name="estado" id="estado" value="Eliminar" />
+                <button type="button" name="ok_button" id="ok_button" class="btn btn-danger"
+                    value="Eliminar">OK</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
@@ -140,20 +147,42 @@ $(document).ready(function() {
             url: "{{ route('usuarios.index') }}",
         },
         columns: [{
+                data: 'image',
+                name: 'image',
+                render: function(data, type, full, meta) {
+                    return "<img src={{ URL::to('/') }}/images/" + data +
+                        " width='70' class='img-thumbnail' />";
+                },
+                orderable: false
+            },
+            {
                 data: 'nombre',
-                name: 'idpersona'
+                name: 'nombre'
             },
             {
                 data: 'email',
                 name: 'email'
             },
             {
+                data: 'cedula',
+                name: 'cedula'
+            },
+            {
+                data: 'telefono',
+                name: 'telefono'
+            },
+            {
+                data: 'genero',
+                name: 'genero'
+            },
+            {
                 data: 'rusuario',
                 name: 'rol'
             },
             {
-                data: 'activo',
-                name: 'activo'
+                data: 'active',
+                name: 'active',
+                orderable: false
             },
             {
                 data: 'action',
@@ -189,7 +218,11 @@ $(document).ready(function() {
         $.ajax({
             url: action_url,
             method: "POST",
-            data: $(this).serialize(),
+            //data: $(this).serialize(),
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
             dataType: "json",
             success: function(data) {
                 var html = '';
@@ -217,9 +250,16 @@ $(document).ready(function() {
             url: "/usuarios/" + id + "/edit",
             dataType: "json",
             success: function(data) {
-                $('#idpersona').val(data.result.idpersona);
+                $('#store_image').html("<img src={{ URL::to('/') }}/images/" + data.result
+                    .image + " width='70' class='img-thumbnail' />");
+                $('#nombre').val(data.result.nombre);
+                $('#store_image').append(
+                    "<input type='hidden' name='hidden_image' value='" + data.result
+                    .image + "' />");
                 $('#email').val(data.result.email);
-                $('#password').val(data.result.password);
+                $('#cedula').val(data.result.cedula);
+                $('#telefono').val(data.result.telefono);
+                $('#genero').val(data.result.genero);
                 $('#rol').val(data.result.rol);
                 $('#activo').val(data.result.activo);
                 $('#hidden_id').val(id);
@@ -235,12 +275,67 @@ $(document).ready(function() {
 
     $(document).on('click', '.delete', function() {
         user_id = $(this).attr('id');
-        $('#ok_button').text('OK');
+        $('#ok_button').text('Eliminar');
+        $('#ok_button').val('Eliminar');
+        $('#estado').val('Eliminar');
+        $('.modal-title').text('Eliminar usuario');
+        $('.mensaje').text('Esta seguro que desea eliminar a este usuario ?');
+        $('#confirmModal').modal('show');
+    });
+    $(document).on('click', '.acti', function() {
+        user_id = $(this).attr('id');
+        $('#ok_button').text('Desactivar');
+        $('#ok_button').val('Desactivar');
+        $('#estado').val('Desactivar');
+        $('.modal-title').text('Estado del usuario');
+        $('.mensaje').text('Esta seguro que desea desactivar ?');
+        $('#confirmModal').modal('show');
+    });
+    $(document).on('click', '.inacti', function() {
+        user_id = $(this).attr('id');
+        $('#ok_button').text('Activar');
+        $('#ok_button').val('Activar');
+        $('#estado').val('Activar');
+        $('.modal-title').text('Estado del usuario');
+        $('.mensaje').text('Esta seguro que desea activar ?');
         $('#confirmModal').modal('show');
     });
 
     $('#ok_button').click(function() {
+
+        event.preventDefault();
+        var action_url = '';
+
+        if ($('#estado').val() == 'Eliminar') {
+            action_url = "usuarios/destroy/";
+        }
+
+        if ($('#estado').val() == 'Activar') {
+            action_url = "usuarios/activar/";
+        }
+
+        if ($('#estado').val() == 'Desactivar') {
+            action_url = "usuarios/desactivar/";
+        }
+
         $.ajax({
+            url: action_url + user_id,
+            beforeSend: function() {
+                $('#ok_button').text('Procesando...');
+            },
+            success: function(data) {
+                $('#confirmModal').modal('hide');
+                $('#usuario_table').DataTable().ajax.reload();
+                setTimeout(function() {
+                    // alert('Data Deleted');
+                }, 2000);
+            }
+
+
+        })
+        /*
+        if($('#ok_button').val()=='Activar'){
+            $.ajax({
             url: "usuarios/destroy/" + user_id,
             beforeSend: function() {
                 $('#ok_button').text('Deleting...');
@@ -253,19 +348,24 @@ $(document).ready(function() {
                 }, 2000);
             }
         })
+        }
+        if($('#ok_button').val()=='Desactivar'){
+            $.ajax({
+            url: "usuarios/destroy/" + user_id,
+            beforeSend: function() {
+                $('#ok_button').text('Deleting...');
+            },
+            success: function(data) {
+                $('#confirmModal').modal('hide');
+                $('#usuario_table').DataTable().ajax.reload();
+                setTimeout(function() {
+                    // alert('Data Deleted');
+                }, 2000);
+            }
+        })
+        }*/
+
     });
-
-
-
-    $('#idpersona').on('change', function(e) {
-        //console.log(e);
-        var u_email = e.target.value;
-        //ajax
-        $.get("usuarios/usuario_email/" + u_email, function(data) {
-            $('#email').val(data.result.email);
-        });
-    });
-
 
 });
 </script>

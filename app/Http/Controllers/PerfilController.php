@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
-use App\Persona;
 use Validator;
 
 class PerfilController extends Controller
@@ -65,7 +64,7 @@ class PerfilController extends Controller
     {
         if(request()->ajax())
         {
-            $data = Persona::findOrFail($id);
+            $data = User::findOrFail($id);
             return response()->json(['result' => $data]);
         }
     }
@@ -128,7 +127,7 @@ class PerfilController extends Controller
                 'genero'     =>  $request->genero
             );
 
-        Persona::whereId($request->hidden_id)->update($form_data);
+        User::whereId($request->hidden_id)->update($form_data);
 
         return response()->json(['success' => 'Data is successfully updated']);
     }

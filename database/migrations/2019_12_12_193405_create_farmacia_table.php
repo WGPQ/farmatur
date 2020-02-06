@@ -19,8 +19,8 @@ class CreateFarmaciaTable extends Migration
             $table->string('nomfarmacia',100);
             $table->string('telefono',20);
             $table->string('direccion',100);
-            $table->string('longitud',100);
-            $table->string('latitud',100);
+            $table->string('latitude',100);
+            $table->string('longitude',100);
            // $table->integer('activo');
             $table->string('jerarquia',100);
             $table->timestamps();

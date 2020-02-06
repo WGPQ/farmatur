@@ -24,24 +24,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['idpersona','email','password','rol','activo'];
-
-    public function persona(){
-        return $this->belongsTo('App\Persona','idpersona');
-    }
+    protected $fillable = ['image','nombre','email', 'cedula','password', 'telefono','genero','rol','activo'];
 
     public function tipos_usuario(){
         return $this->belongsTo('App\Tipos_usuario','rol');
-    }
-        
-
-    public function verificar($user,$email){
-        foreach($user as $us){
-            if ($us->email==$email){
-                return true;
-            }
-        }
-        return false;
     }
     /**
      * The attributes excluded from the model's JSON form.
