@@ -146,4 +146,6 @@ public function __construct()
         $data = Divpolitica::findOrFail($id);
         $data->delete();
     }
+
+    
 }

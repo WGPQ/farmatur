@@ -19,8 +19,9 @@ class Farmacias extends Model
         return $this->belongsTo('App\Divpolitica','id_division');
 
     }
+     
 
- 
+    
      /**
       * The accessors to append to the model's array form.
       *

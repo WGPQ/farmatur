@@ -171,4 +171,13 @@ class FarmaciaController extends Controller
         $data = Farmacias::findOrFail($id);
         $data->delete();
     }
+
+    public function farmacia_ciudad($id)
+    {
+          if(request()->ajax())
+        {
+            $data = Farmacias::findOrFail($id);
+            return response()->json(['result' => $data]);
+        }
+    }
 }

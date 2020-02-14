@@ -79,10 +79,22 @@
                                     <select name="id_division" id="id_division"
                                         data-placeholder="Seleccione una Parroquia" class="form-control" tabindex="1"
                                         required onchange="">
+                                        <option value=""></option>
                                         @foreach($ciudadp as $div_pol)
-                                        @if($div_pol->parent_id !=null)
-                                        <option value="{{$div_pol->id}}">{{$div_pol->nomdivision}}</option>
+                                        @if($div_pol->parent_id !=null)  
+                                         <option value="{{$div_pol->id}}">{{$div_pol->nomdivision}}</option>
                                        @endif
+                                        @endforeach
+                                    </select>
+                                    <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
+                                </div>
+                                <div class="col-md-8">
+                                    <select name="farmacia" id="farmacia"
+                                        data-placeholder="Seleccione una Parroquia" class="form-control" tabindex="1"
+                                        required onchange="">
+                                        <option value=" "></option>
+                                        @foreach($ciudadp as $div_pol)
+                                        <option value="{{$div_pol->id}}">{{$div_pol->Listafarmacias['nomfarmacia']}}</option>
                                         @endforeach
                                     </select>
                                     <!-- <input type="text" name="genero" id="genero" class="form-control" />-->
@@ -150,6 +162,19 @@
         theMarker.bindPopup(popupContent).openPopup();
     });
     @endcan
+
+
+    $('#id_division').on('change', function(e) {
+        //console.log(e);
+        var id_div = e.target.value;
+        //ajax
+        $.get("farmacia/farmacia_ciudad/" + id_div, function(data) {
+
+            $('#farmacia').val(data.result.email);
+        });
+    });
+
+
 
 
 
